@@ -53,7 +53,7 @@ public class CuacaFragment extends Fragment {
 
             }
         });
-        asyncTask.execute("25.180000", "89.530000"); //  asyncTask.execute("Latitude", "Longitude")
+        asyncTask.execute("-6.914744", "107.609810"); //  asyncTask.execute("Latitude", "Longitude")
 
         return view;
     }
