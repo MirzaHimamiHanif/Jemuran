@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <item
         android:id="@+id/navigation_status"
         android:icon="@drawable/ic_home_black_24dp"
@@ -7,13 +9,8 @@
 
     <item
         android:id="@+id/navigation_sensor"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_sensor" />
-
-    <item
-        android:id="@+id/navigation_jemuran"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_jemuran" />
+        android:title="@string/title_sensor"/>
 
     <item
         android:id="@+id/navigation_cuaca"
