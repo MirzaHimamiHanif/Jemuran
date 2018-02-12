@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Jemuran</string>
+
+    <string name="title_status">Status</string>
+    <string name="title_sensor">Sensor</string>
+    <string name="title_jemuran">Jemuran</string>
+    <string name="title_cuaca">Cuaca</string>
+</resources>

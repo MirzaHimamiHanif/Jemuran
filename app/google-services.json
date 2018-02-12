@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "433104207609",
+    "firebase_url": "https://jemuran-8ad2a.firebaseio.com",
+    "project_id": "jemuran-8ad2a",
+    "storage_bucket": "jemuran-8ad2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433104207609:android:20749eae774e617a",
+        "android_client_info": {
+          "package_name": "org.pindad.jemuran"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433104207609-i3jo9b53r1lnblhf761do9lb89du1iee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.pindad.jemuran",
+            "certificate_hash": "7f4cf971a8e71d842182864474884b40c3603b0d"
+          }
+        },
+        {
+          "client_id": "433104207609-gb0l8m1fr82pl92avj3noju77qelmq39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkD_gUbW4mEYFffIY4SWfyZTJmifT31p8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433104207609-gb0l8m1fr82pl92avj3noju77qelmq39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
