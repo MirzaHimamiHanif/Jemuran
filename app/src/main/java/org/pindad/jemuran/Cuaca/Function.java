@@ -115,16 +115,8 @@ public class Function {
             } catch (JSONException e) {
                 //Log.e(LOG_TAG, "Cannot process JSON results", e);
             }
-
-
-
         }
     }
-
-
-
-
-
 
     public static JSONObject getWeatherJSON(String lat, String lon){
         try {

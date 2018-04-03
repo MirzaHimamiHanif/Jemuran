@@ -1,7 +1,12 @@
 package org.pindad.jemuran.Cuaca;
 
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -9,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.pindad.jemuran.Manifest;
 import org.pindad.jemuran.R;
 import org.pindad.jemuran.Sensor.ModelSensor.ListSensor;
 import org.pindad.jemuran.Status.ModelStatus.ListStatus;
@@ -18,18 +24,20 @@ import org.pindad.jemuran.Status.ModelStatus.ListStatus;
  */
 
 public class CuacaFragment extends Fragment {
+    static final int REQUEST_LOCATION = 1;
+    LocationManager locationManager;
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
-
     Typeface weatherFont;
+    private String mLatitude, mLongitude;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_cuaca, container, false);
-
         weatherFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/weathericons-regular-webfont.ttf");
-
+        locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
+        getLocation();
         cityField = (TextView) view.findViewById(R.id.city_field);
         updatedField = (TextView) view.findViewById(R.id.updated_field);
         detailsField = (TextView) view.findViewById(R.id.details_field);
@@ -53,9 +61,32 @@ public class CuacaFragment extends Fragment {
 
             }
         });
-        asyncTask.execute("-6.914744", "107.609810"); //  asyncTask.execute("Latitude", "Longitude")
-
+        asyncTask.execute(mLatitude, mLongitude); //  asyncTask.execute("Latitude", "Longitude")
         return view;
+    }
+
+    private void getLocation() {
+        if(ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }else{
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location!=null){
+                mLatitude = Double.toString(location.getLatitude());
+                mLongitude = Double.toString(location.getLongitude());
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_LOCATION :
+                getLocation();
+                break;
+
+        }
     }
 
 }

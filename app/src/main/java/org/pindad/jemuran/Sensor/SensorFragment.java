@@ -36,7 +36,6 @@ public class SensorFragment extends Fragment {
         mStatusGetar = view.findViewById(R.id.statusGetar);
         mStatusHujan = view.findViewById(R.id.statusHujan);
 
-        mListStatus = new ListStatus();
         mListSensor = new ListSensor();
 
         firebaseSetUp();
