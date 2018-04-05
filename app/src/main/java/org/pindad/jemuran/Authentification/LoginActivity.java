@@ -24,7 +24,7 @@ import org.pindad.jemuran.R;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private EditText mEmail, mPassword;
+    private EditText mUsername, mPassword;
     private Button mLogin;
 
     @Override
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mEmail = (EditText) findViewById(R.id.email);
+        mUsername = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mLogin =(Button) findViewById(R.id.btn_login);
 
@@ -58,5 +58,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    private void signIn(){
+
     }
 }
