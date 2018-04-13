@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Jemuran.iml" filepath="$PROJECT_DIR$/Jemuran.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Jemuran.iml" filepath="$PROJECT_DIR$/.idea/Jemuran.iml" />
+      <module fileurl="file://E:\Project Kuliah\Semester 6\Proyek Akhir\Aplikasi Android\Jemuran\Jemuran.iml" filepath="E:\Project Kuliah\Semester 6\Proyek Akhir\Aplikasi Android\Jemuran\Jemuran.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -1,35 +1,44 @@
 package org.pindad.jemuran.Status.ModelStatus;
 
 /**
- * Created by ASUS on 11/02/2018.
+ * Created by ASUS on 12/02/2018.
  */
 
 public class ListStatus {
-    long sensor_getar;
-    long sensor_hujan;
+    private long alarm;
+    private long atap;
+    private long kipas;
 
-    public ListStatus(){
-
+    public ListStatus() {
     }
 
-    public ListStatus(long sensor_getar, long sensor_hujan) {
-        this.sensor_getar = sensor_getar;
-        this.sensor_hujan = sensor_hujan;
+    public ListStatus(long alarm, long atap, long kipas) {
+        this.alarm = alarm;
+        this.atap = atap;
+        this.kipas = kipas;
     }
 
-    public long getSensor_getar() {
-        return sensor_getar;
+    public long getAlarm() {
+        return alarm;
     }
 
-    public void setSensor_getar(long sensor_getar) {
-        this.sensor_getar = sensor_getar;
+    public void setAlarm(long alarm) {
+        this.alarm = alarm;
     }
 
-    public long getSensor_hujan() {
-        return sensor_hujan;
+    public long getAtap() {
+        return atap;
     }
 
-    public void setSensor_hujan(long sensor_hujan) {
-        this.sensor_hujan = sensor_hujan;
+    public void setAtap(long atap) {
+        this.atap = atap;
+    }
+
+    public long getKipas() {
+        return kipas;
+    }
+
+    public void setKipas(long kipas) {
+        this.kipas = kipas;
     }
 }
