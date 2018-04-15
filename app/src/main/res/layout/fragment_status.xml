@@ -4,60 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
-    android:orientation="vertical"
-    android:background="@drawable/backgroundstatus">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/lemari"
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:src="@drawable/lemari" />
+        android:src="@drawable/warning" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/statusLemari"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:text="Status: Mati"/>
-            <TextView
-                android:id="@+id/waktuMulai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="10:40 WIB"
-                android:textColor="@android:color/darker_gray" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Switch
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="On"/>
-        </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#33000000">
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:background="@color/colorTransparant">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/statusLemari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Status: Mati"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/waktuMulai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10:40 WIB"
+                    android:textColor="@android:color/darker_gray" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="On"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

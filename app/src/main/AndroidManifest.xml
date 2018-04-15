@@ -15,8 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Authentification.LoginActivity"
-            android:theme="@style/AppThemeNoActionBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +25,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeNoActionBar"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>

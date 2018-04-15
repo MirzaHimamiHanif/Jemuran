@@ -1,11 +1,13 @@
 package org.pindad.jemuran.Status;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.pindad.jemuran.HistoryActivity;
 import org.pindad.jemuran.Status.ModelStatus.ListStatus;
 import org.pindad.jemuran.R;
 
@@ -24,6 +27,7 @@ import org.pindad.jemuran.R;
 
 public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private Switch mAlarm, mAtap, mKipas;
+    private ImageView lemari;
     private ListStatus mListStatus;
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -40,6 +44,15 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         mListStatus = new ListStatus();
         cek=true;
         mAlarm.setClickable(false);
+        lemari = view.findViewById(R.id.lemari);
+        lemari.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
         firebaseSetUp();
         return view ;
     }

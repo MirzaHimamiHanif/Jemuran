@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.pindad.jemuran.MainActivity"
     android:id="@+id/main"
+    android:background="@drawable/backgroundsensor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?android:attr/windowBackground"
+        android:background="#ffffff"
         app:menu="@menu/navigation" />
 
 </RelativeLayout>

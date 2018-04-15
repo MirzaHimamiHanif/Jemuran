@@ -1,5 +1,6 @@
 package org.pindad.jemuran;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         return true;
                     case R.id.navigation_logout:
-
+                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundsensor"
     android:orientation="vertical">
 
     <LinearLayout
@@ -48,8 +47,8 @@
         <TextView
             android:id="@+id/statusHujan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rectangle_blue"
+            android:layout_height="150dp"
+            android:background="@drawable/ic_cloud_queue_black_24dp"
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="52sp" />
