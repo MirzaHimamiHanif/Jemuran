@@ -1,6 +1,8 @@
 package org.pindad.jemuran;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import org.pindad.jemuran.Authentification.LoginActivity;
 import org.pindad.jemuran.Cuaca.CuacaFragment;
 import org.pindad.jemuran.Status.StatusFragment;
 import org.pindad.jemuran.Sensor.SensorFragment;
@@ -58,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         return true;
                     case R.id.navigation_logout:
-                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                        Context context = getApplicationContext();
+                        context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit().clear().commit();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         return true;
                 }
