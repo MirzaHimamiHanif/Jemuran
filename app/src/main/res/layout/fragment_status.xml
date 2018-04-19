@@ -10,8 +10,9 @@
         android:id="@+id/lemari"
         android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/warning" />
+        android:layout_height="250dp"
+        android:src="@drawable/warning"
+        android:paddingBottom="32dp"/>
 
 
     <LinearLayout

@@ -20,8 +20,8 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerViewHolder> {
 
     private final Context context;
 
-    String [] name={"Apple","Facebook","Twitter","Google",
-            "Microsoft","Wikipedia","Yahoo","Youtube"};
+    String [] name={"Tanggal 1","Tanggal 2","Tanggal 3","Tanggal 4",
+            "Tanggal 5","Tanggal 6","Tanggal 7","Tanggal 8"};
     // menampilkan list item dalam bentuk text dengan tipe data string dengan variable name
 
     LayoutInflater inflater;
@@ -40,11 +40,11 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        holder.tv1.setText(name[position]);
-        holder.tv1.setOnClickListener(clickListener);
-        holder.imageView.setOnClickListener(clickListener);
-        holder.tv1.setTag(holder);
-        holder.imageView.setTag(holder);
+//        holder.number.setText(position);
+        holder.judul.setText(name[position]);
+        holder.awal.setOnClickListener(clickListener);
+        holder.akhir.setOnClickListener(clickListener);
+        holder.judul.setTag(holder);
 
     }
 

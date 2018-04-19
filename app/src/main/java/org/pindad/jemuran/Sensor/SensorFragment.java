@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class SensorFragment extends Fragment {
     ListSensor mListSensor;
     private ListStatus mListStatus;
     TextView mStatusGetar, mStatusHujan;
+    ImageView iStatusGetar, iStatusHujan;
     FirebaseDatabase database;
     DatabaseReference myRef, myRef2;
     @Override
