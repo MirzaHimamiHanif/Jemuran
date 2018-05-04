@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.pindad.jemuran.HistoryActivity;
+import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.Status.ModelStatus.ListStatus;
 import org.pindad.jemuran.R;
 
@@ -59,7 +60,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
 
     private void firebaseSetUp() {
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("alat");
+        myRef = database.getReference().child(((MainActivity)getActivity()).username).child("alat");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,7 +70,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                     setSwitch(mAtap, mListStatus.getAtap());
                     setSwitch(mKipas, mListStatus.getKipas());
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+
                 }
             }
 

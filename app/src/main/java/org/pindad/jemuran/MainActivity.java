@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private StatusFragment statusFragment;
     private SensorFragment sensorFragment;
     private CuacaFragment cuacaFragment;
+    public String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +33,18 @@ public class MainActivity extends AppCompatActivity {
         sensorFragment = new SensorFragment();
         statusFragment = new StatusFragment();
         cuacaFragment = new CuacaFragment();
+        BottomNavigationViewHelper.disableShiftMode(mNavigationView);
 
         mFragmentManager.beginTransaction()
                 .replace(R.id.container, statusFragment)
                 .commit();
         NavBotClicked();
+        getUsername();
     }
-
+    public void getUsername(){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), this.MODE_PRIVATE);
+        username = sharedPreferences.getString(getString(R.string.username), null);
+    }
     public void NavBotClicked() {
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

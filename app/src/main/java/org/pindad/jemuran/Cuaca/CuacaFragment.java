@@ -58,7 +58,6 @@ public class CuacaFragment extends Fragment {
                 humidity_field.setText("Humidity: "+weather_humidity);
                 pressure_field.setText("Pressure: "+weather_pressure);
                 weatherIcon.setText(Html.fromHtml(weather_iconText));
-
             }
         });
         asyncTask.execute(mLatitude, mLongitude); //  asyncTask.execute("Latitude", "Longitude")

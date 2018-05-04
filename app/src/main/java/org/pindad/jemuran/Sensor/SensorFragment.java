@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.R;
 import org.pindad.jemuran.Sensor.ModelSensor.ListSensor;
 import org.pindad.jemuran.Status.ModelStatus.ListStatus;
@@ -46,7 +47,7 @@ public class SensorFragment extends Fragment {
 
     private void firebaseSetUp() {
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("sensor");
+        myRef = database.getReference().child(((MainActivity)getActivity()).username).child("sensor");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

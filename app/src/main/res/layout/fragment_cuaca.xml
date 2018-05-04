@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/city_field"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="13sp" />
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="90sp"
         />
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="50sp" />
 
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/weather_icon"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <TextView
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/details_field"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <TextView
@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/humidity_field"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
 
