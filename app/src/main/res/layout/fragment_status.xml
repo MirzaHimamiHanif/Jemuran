@@ -55,10 +55,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Switch
+                    android:id="@+id/switchSistem"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="On"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -90,8 +89,7 @@
                 <Switch
                     android:id="@+id/switchAlarm"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="On"/>
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -124,8 +122,7 @@
                     android:id="@+id/switchAtap"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:text="On"/>
+                    android:clickable="false"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -158,8 +155,7 @@
                     android:id="@+id/switchKipas"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:text="On"/>
+                    android:clickable="false"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

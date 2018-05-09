@@ -35,8 +35,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.jjoe64:graphview:4.2.1'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.github.lzyzsd:circleprogress:1.2.1'
+    implementation 'com.jjoe64:graphview:4.2.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.lzyzsd:circleprogress:1.2.1'
+    implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:v1.1.1'
 }
 apply plugin: 'com.google.gms.google-services'

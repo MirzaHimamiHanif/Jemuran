@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,9 @@ public class CuacaFragment extends Fragment {
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
     Typeface weatherFont;
     private String mLatitude, mLongitude;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,10 +45,8 @@ public class CuacaFragment extends Fragment {
         cityField = (TextView) view.findViewById(R.id.city_field);
         updatedField = (TextView) view.findViewById(R.id.updated_field);
         detailsField = (TextView) view.findViewById(R.id.details_field);
-        currentTemperatureField = (TextView) view.findViewById(R.id.current_temperature_field);
-        humidity_field = (TextView) view.findViewById(R.id.humidity_field);
-        pressure_field = (TextView) view.findViewById(R.id.pressure_field);
         weatherIcon = (TextView) view.findViewById(R.id.weather_icon);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.forecast);
         weatherIcon.setTypeface(weatherFont);
 
 

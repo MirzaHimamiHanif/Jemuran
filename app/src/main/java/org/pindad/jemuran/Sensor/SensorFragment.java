@@ -57,7 +57,7 @@ public class SensorFragment extends Fragment {
                     setTextView(mStatusHujan,mListSensor.getSensor_hujan());
 
                 }catch (Exception e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+
                 }
             }
 
