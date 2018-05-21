@@ -17,4 +17,5 @@
     <string name="username">username</string>
     <string name="loginTxt">Login</string>
     <string name="OPEN_WEATHER_MAP_API_KEY">cd2d12b0938ed8aaa0bb9159cc11eb54</string>
+    <string name="google_maps_key">AIzaSyAkD_gUbW4mEYFffIY4SWfyZTJmifT31p8</string>
 </resources>

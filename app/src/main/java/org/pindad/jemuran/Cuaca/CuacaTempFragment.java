@@ -1,5 +1,6 @@
 package org.pindad.jemuran.Cuaca;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -16,14 +17,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import com.kwabenaberko.openweathermaplib.models.threehourforecast.ThreeHourForecast;
 
 import org.pindad.jemuran.Adapter.CuacaAdapter;
+import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.R;
 import org.w3c.dom.Text;
 
@@ -33,18 +42,20 @@ import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
-public class CuacaTempFragment extends Fragment {
+public class CuacaTempFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     private Double mLatitude, mLongitude;
     OpenWeatherMapHelper helper;
     TextView cityField, detailsField, weatherIcon, updatedField, temperatureField, humidityField, pressureField;
+    ImageButton placePicker;
     Typeface weatherFont;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
     long sunrise, sunset;
     ArrayList<ListCuaca> listCuaca;
+    private int PLACE_PICKER_REQUEST = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +74,7 @@ public class CuacaTempFragment extends Fragment {
         temperatureField = (TextView) view.findViewById(R.id.current_temperature_field);
         humidityField = (TextView) view.findViewById(R.id.humidity_field);
         pressureField = (TextView) view.findViewById(R.id.pressure_field);
+        placePicker = (ImageButton) view.findViewById(R.id.place_picker);
         weatherIcon.setTypeface(weatherFont);
         listCuaca = new ArrayList<>();
 
@@ -70,7 +82,7 @@ public class CuacaTempFragment extends Fragment {
         mLayoutManager  = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         getLocation();
-
+        placePicker.setOnClickListener(this);
         return view;
     }
 
@@ -173,4 +185,21 @@ public class CuacaTempFragment extends Fragment {
         return icon;
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view == placePicker){
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            try {
+                //menjalankan place picker
+                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+
+                // check apabila <a title="Solusi Tidak Bisa Download Google Play Services di Android" href="http://www.twoh.co/2014/11/solusi-tidak-bisa-download-google-play-services-di-android/" target="_blank">Google Play Services tidak terinstall</a> di HP
+            } catch (GooglePlayServicesRepairableException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

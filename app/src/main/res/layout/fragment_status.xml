@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Status: Mati"
+                    android:text="Status Sistem : Mati"
                     android:textStyle="bold" />
 
                 <TextView
@@ -86,8 +86,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-                <Switch
-                    android:id="@+id/switchAlarm"
+                <TextView
+                    android:id="@+id/statusAlarm"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </LinearLayout>
@@ -118,11 +119,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-                <Switch
-                    android:id="@+id/switchAtap"
+                <TextView
+                    android:id="@+id/statusAtap"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="false"/>
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -151,11 +152,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-                <Switch
-                    android:id="@+id/switchKipas"
+                <TextView
+                    android:id="@+id/statusKipas"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="false"/>
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

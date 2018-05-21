@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +31,8 @@ import org.pindad.jemuran.R;
  * Created by ASUS on 11/02/2018.
  */
 
-public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
-    private Switch mAlarm, mAtap, mKipas, mSistem;
+public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+    private TextView mAlarm, mAtap, mKipas, mSistem;
     private ImageView lemari;
     private ListStatus mListStatus;
     private Long mBoolSistem;
@@ -44,12 +45,11 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
         mSistem = view.findViewById(R.id.switchSistem);
-        mAlarm = view.findViewById(R.id.switchAlarm);
-        mAtap = view.findViewById(R.id.switchAtap);
-        mKipas = view.findViewById(R.id.switchKipas);
-        mAlarm.setOnCheckedChangeListener(this);
-        mSistem.setOnCheckedChangeListener(this);
+        mAlarm = view.findViewById(R.id.statusAlarm);
+        mAtap = view.findViewById(R.id.statusAtap);
+        mKipas = view.findViewById(R.id.statusKipas);
         mListStatus = new ListStatus();
+        mSistem.setOnClickListener(this);
         cek=true;
         mAlarm.setClickable(false);
         lemari = view.findViewById(R.id.lemari);
@@ -73,9 +73,9 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try{
                     mListStatus = dataSnapshot.getValue(ListStatus.class);
-                    setSwitch(mAlarm, mListStatus.getAlarm());
-                    setSwitch(mAtap, mListStatus.getAtap());
-                    setSwitch(mKipas, mListStatus.getKipas());
+                    setTextView(mAlarm, mListStatus.getAlarm());
+                    setTextView(mAtap, mListStatus.getAtap());
+                    setTextView(mKipas, mListStatus.getKipas());
                 }catch (Exception e){
 
                 }
@@ -88,65 +88,25 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         });
     }
 
-    private Switch setSwitch(Switch mSwitch, long status){
+    private TextView setTextView(TextView textView, long status){
         if (status==0){
-            mSwitch.setChecked(false);
+            textView.setText("Off");
         }else{
-            mSwitch.setChecked(true);
+            textView.setText("On");
         }
-        return mSwitch;
+        return textView;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if(compoundButton==mAlarm){
-            if(!b){
-                compoundButton.setClickable(true);
-            }else{
-                compoundButton.setClickable(false);
-                mListStatus.setAlarm(0);
-            }
-            myRef.push();
-            myRef.setValue(mListStatus);
-        }else if(compoundButton==mSistem){
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//            AlertDialog alert;
-//            if(b){
-//                builder.setMessage("Jika anda menekan tombol 'Ya' maka semua sistem dari tutup atap serta alarm akan mati." +
-//                        " Namun anda bisa mengkatifkannya lagi nanti. Anda ingin melanjutkan?")
-//                        .setCancelable(false)
-//                        .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        })
-//                        .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                setSwitch(mSistem, 0);
-//                                dialog.cancel();
-//                            }
-//                        });
-//                alert = builder.create();
-//                alert.show();
-//
-//            }else {
-//                builder.setMessage("Anda yakin ingin mengaktifkan sistem?")
-//                        .setCancelable(false)
-//                        .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        })
-//                        .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                setSwitch(mSistem, 1);
-//                                dialog.cancel();
-//                            }
-//                        });
-//                alert = builder.create();
-//                alert.show();
-//            }
-        }
+
+
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view==mSistem){
+
+        }
+    }
 }
