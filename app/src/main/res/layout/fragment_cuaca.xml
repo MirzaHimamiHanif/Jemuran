@@ -38,11 +38,15 @@
                     android:textSize="13sp" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/click_picker"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:visibility="invisible">
                 <ImageButton
                     android:id="@+id/place_picker"
                     android:layout_width="wrap_content"
@@ -64,56 +68,76 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+                    <ImageView
+                        android:id="@+id/weather_icon"
+                        android:layout_margin="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/details_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/weather_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="90sp" />
-
-                <TextView
-                    android:id="@+id/details_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/current_temperature_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-                <TextView
-                    android:id="@+id/humidity_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
-                <TextView
-                    android:id="@+id/pressure_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
 
+                    <TextView
+                        android:id="@+id/current_temperature_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/humidity_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        />
+                    <TextView
+                        android:id="@+id/pressure_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         </LinearLayout>
@@ -129,9 +153,10 @@
             android:layout_gravity="center">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/forecast"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </android.support.v7.widget.RecyclerView>
         </HorizontalScrollView>
     </LinearLayout>
+
 </LinearLayout>

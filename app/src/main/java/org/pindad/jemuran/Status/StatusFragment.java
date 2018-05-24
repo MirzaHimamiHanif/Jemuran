@@ -1,19 +1,14 @@
 package org.pindad.jemuran.Status;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,9 +16,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.pindad.jemuran.Authentification.LoginActivity;
-import org.pindad.jemuran.HistoryActivity;
+import org.pindad.jemuran.History.HistoryActivity;
 import org.pindad.jemuran.MainActivity;
+import org.pindad.jemuran.Status.ModelStatus.ListSistem;
 import org.pindad.jemuran.Status.ModelStatus.ListStatus;
 import org.pindad.jemuran.R;
 
@@ -31,10 +26,11 @@ import org.pindad.jemuran.R;
  * Created by ASUS on 11/02/2018.
  */
 
-public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    private TextView mAlarm, mAtap, mKipas, mSistem;
+public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+    private TextView mAlarm, mAtap, mKipas, mSistemJemuran, mSistemAntiMaling;
     private ImageView lemari;
     private ListStatus mListStatus;
+    private ListSistem mListSistem;
     private Long mBoolSistem;
     FirebaseDatabase database;
     DatabaseReference myRef, myRef2;
@@ -44,12 +40,13 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
-        mSistem = view.findViewById(R.id.switchSistem);
+        mSistemJemuran = view.findViewById(R.id.switchSistemJemuran);
+        mSistemAntiMaling = view.findViewById(R.id.switchSistemAntiMaling);
         mAlarm = view.findViewById(R.id.statusAlarm);
         mAtap = view.findViewById(R.id.statusAtap);
         mKipas = view.findViewById(R.id.statusKipas);
         mListStatus = new ListStatus();
-        mSistem.setOnClickListener(this);
+        mListSistem = new ListSistem();
         cek=true;
         mAlarm.setClickable(false);
         lemari = view.findViewById(R.id.lemari);
@@ -58,6 +55,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), HistoryActivity.class);
+                intent.putExtra("username", ((MainActivity)getActivity()).username);
                 startActivity(intent);
             }
         });
@@ -68,6 +66,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     private void firebaseSetUp() {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child(((MainActivity)getActivity()).username).child("alat");
+        myRef2 = database.getReference().child(((MainActivity)getActivity()).username).child("sistem");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,8 +87,8 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         });
     }
 
-    private TextView setTextView(TextView textView, long status){
-        if (status==0){
+    private TextView setTextView(TextView textView, boolean status){
+        if (status==false){
             textView.setText("Off");
         }else{
             textView.setText("On");
@@ -99,14 +98,13 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view==mSistem){
-
+        if (compoundButton==mSistemJemuran){
+            mListSistem.setSistem_jemuran(b);
         }
+        if (compoundButton==mSistemAntiMaling){
+            mListSistem.setSistem_anti_maling(b);
+        }
+        myRef2.setValue(mListSistem);
     }
+
 }

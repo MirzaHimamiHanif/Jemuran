@@ -1,18 +1,28 @@
-package org.pindad.jemuran;
+package org.pindad.jemuran.History;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import org.pindad.jemuran.Adapter.RecyclerAdapter;
+import org.pindad.jemuran.Adapter.HistoryAdapter;
+import org.pindad.jemuran.History.ModelHistory.ListHistory;
+import org.pindad.jemuran.MainActivity;
+import org.pindad.jemuran.R;
+import org.pindad.jemuran.Status.ModelStatus.ListStatus;
 
 import java.util.ArrayList;
 
@@ -21,6 +31,9 @@ public class HistoryActivity extends AppCompatActivity {
     //deklarasi variabel reyclerview
     RecyclerView recyclerView;
     private LineChart mChart;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    ArrayList<ListHistory> mListHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,20 +41,8 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         recyclerView= (RecyclerView) findViewById(R.id.recycler_view);
+        mListHistory = new ArrayList<>();
         //menampilkan reyclerview yang ada pada file layout dengan id reycler view
-
-        RecyclerAdapter adapter=new RecyclerAdapter(this);
-        //membuat adapter baru untuk reyclerview
-        recyclerView.setAdapter(adapter);
-        //menset nilai dari adapter
-        recyclerView.setHasFixedSize(true);
-        //menset setukuran
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //menset layoutmanager dan menampilkan daftar/list
-        //dalam bentuk linearlayoutmanager pada class saat ini
-
-
-
         mChart = (LineChart) findViewById(R.id.lineChart1);
 
 //        mChart.setOnChartGestureListener(HistoryBulanFragment.this);
@@ -98,7 +99,32 @@ public class HistoryActivity extends AppCompatActivity {
         LineData data = new LineData(dataSets);
 
         mChart.setData(data);
+        firebaseSetUp();
+        HistoryAdapter adapter=new HistoryAdapter(this, mListHistory );
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+    private void firebaseSetUp() {
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child(getIntent().getStringExtra("username")).child("history");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try{
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        mListHistory.add(snapshot.getValue(ListHistory.class));
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
 }

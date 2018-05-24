@@ -1,6 +1,8 @@
 package org.pindad.jemuran.Cuaca;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -19,9 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
+import com.github.mikephil.charting.data.LineRadarDataSet;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -32,13 +40,29 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import com.kwabenaberko.openweathermaplib.models.threehourforecast.ThreeHourForecast;
 
 import org.pindad.jemuran.Adapter.CuacaAdapter;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.DataWWO;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ListCurrentWeather;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ListData;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ListForecast;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ListLokasi;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ListWaktu;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ModelForecast.ListHourly;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ModelUmum.ListWeatherIcon;
 import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.R;
+import org.pindad.jemuran.Rest.ApiClient;
+import org.pindad.jemuran.Rest.ApiInterface;
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
@@ -46,42 +70,47 @@ public class CuacaTempFragment extends Fragment implements View.OnClickListener 
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     private Double mLatitude, mLongitude;
-    OpenWeatherMapHelper helper;
-    TextView cityField, detailsField, weatherIcon, updatedField, temperatureField, humidityField, pressureField;
-    ImageButton placePicker;
-    Typeface weatherFont;
+    TextView cityField, detailsField, updatedField, temperatureField, humidityField, pressureField;
+    ImageView weatherIcon;
+    LinearLayout placePicker, progressBar;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
-    long sunrise, sunset;
-    ArrayList<ListCuaca> listCuaca;
+    List<ListCurrentWeather> listCuaca;
+    ListData listData;
+    SharedPreferences sharedPref;
     private int PLACE_PICKER_REQUEST = 1;
+    List<ListCurrentWeather> listCurrentWeathers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_cuaca, container, false);
-        weatherFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/weathericons-regular-webfont.ttf");
+        sharedPref = getContext().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
-        helper = new OpenWeatherMapHelper();
-        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
-        helper.setUnits(Units.METRIC);
         cityField = (TextView) view.findViewById(R.id.city_field);
         updatedField = (TextView) view.findViewById(R.id.updated_field);
         detailsField = (TextView) view.findViewById(R.id.details_field);
-        weatherIcon = (TextView) view.findViewById(R.id.weather_icon);
+        weatherIcon = (ImageView) view.findViewById(R.id.weather_icon);
+        placePicker = (LinearLayout) view.findViewById(R.id.click_picker);
+        progressBar = (LinearLayout) view.findViewById(R.id.progressBar);
         temperatureField = (TextView) view.findViewById(R.id.current_temperature_field);
         humidityField = (TextView) view.findViewById(R.id.humidity_field);
         pressureField = (TextView) view.findViewById(R.id.pressure_field);
-        placePicker = (ImageButton) view.findViewById(R.id.place_picker);
-        weatherIcon.setTypeface(weatherFont);
         listCuaca = new ArrayList<>();
-
+        listData = new ListData();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.forecast);
         mLayoutManager  = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getLocation();
+        if(sharedPref.getString(getString(R.string.longtitude), null)!=null){
+            mLongitude = Double.parseDouble(sharedPref.getString(getString(R.string.longtitude), null));
+            mLatitude = Double.parseDouble(sharedPref.getString(getString(R.string.latitude), null));
+        }else {
+            getLocation();
+        }
+        getList();
         placePicker.setOnClickListener(this);
         return view;
     }
@@ -99,51 +128,55 @@ public class CuacaTempFragment extends Fragment implements View.OnClickListener 
             }catch (Exception e){
 
             }
-            helper.getCurrentWeatherByGeoCoordinates(mLatitude, mLongitude, new OpenWeatherMapHelper.CurrentWeatherCallback() {
-                @Override
-                public void onSuccess(CurrentWeather currentWeather) {
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    cityField.setText(currentWeather.getName());
-                    updatedField.setText(df.format(new Date(currentWeather.getDt()*1000)));
-                    sunrise = currentWeather.getSys().getSunrise()* 1000;
-                    sunset = currentWeather.getSys().getSunset()* 1000;
-                    weatherIcon.setText(Html.fromHtml(setWeatherIcon(currentWeather.getWeatherArray().get(0).getId().intValue(),
-                            sunrise, sunset)));
-                    detailsField.setText(currentWeather.getWeatherArray().get(0).getDescription());
-                    temperatureField.setText(currentWeather.getMain().getTemp() + "°C");
-                    humidityField.setText("Humidity : " + currentWeather.getMain().getHumidity() + "");
-                    pressureField.setText("Pressure : " + currentWeather.getMain().getPressure() + "");
-                }
+        }
+    }
+    private void getList() {
+        ApiInterface apiService = ApiClient.getClient(mLatitude,mLongitude).create(ApiInterface.class);
+        Call<DataWWO> call = apiService.getCurrentWeather("5b7e8f4eae6f49afb8164444182305",
+                mLatitude+","+mLongitude,
+                "json",
+                "2",
+                "no",
+                "yes",
+                "3",
+                "yes");
 
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Log.v(TAG, throwable.getMessage());
+        call.enqueue(new Callback<DataWWO>() {
+            @Override
+            public void onResponse(Call<DataWWO> call, Response<DataWWO> response) {
+                listData = response.body().getData();
+                try {
+                    cityField.setText(listData.getLokasiList().get(0).getAreaName().get(0).getValue());
+                }catch (Exception e){
+
                 }
-            });
-            helper.getThreeHourForecastByGeoCoordinates(mLatitude,mLongitude, new OpenWeatherMapHelper.ThreeHourForecastCallback() {
-                @Override
-                public void onSuccess(ThreeHourForecast threeHourForecast) {
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    String tanggal, cuaca;
-                    for(int i=0;i<8;i++){
-                        tanggal = df.format(new Date(threeHourForecast.getThreeHourWeatherArray().get(i).getDt()*1000));
-                        cuaca = setWeatherIcon(threeHourForecast.getThreeHourWeatherArray().get(i).getWeatherArray().get(0).getId().intValue(),
-                                sunrise, sunset);
-                        listCuaca.add(new ListCuaca(tanggal,
-                                Html.fromHtml(cuaca),
-                                threeHourForecast.getThreeHourWeatherArray().get(i).getMain().getTemp()+"°C"));
-                    }
-                    mAdapter = new CuacaAdapter(getContext(), listCuaca);
+                updatedField.setText(listData.getWaktuList().get(0).getLocalTime());
+                detailsField.setText(listData.getCurrentWeatherList().get(0).getWeatherDesc().get(0).getValue());
+                if(isAdded()){
+                    Glide.with(getContext())
+                            .load(listData.getCurrentWeatherList().get(0).getWeatherIconUrl().get(0).getValue())
+                            .into(weatherIcon);
+                }
+                temperatureField.setText(listData.getCurrentWeatherList().get(0).getTempC() + "°C");
+                humidityField.setText("Humidity : " + listData.getCurrentWeatherList().get(0).getHumidity() + "%");
+                pressureField.setText("Pressure : " + listData.getCurrentWeatherList().get(0).getPressure() + " mb");
+                placePicker.setVisibility(View.VISIBLE);
+                ArrayList<ListHourly> listHourlies = new ArrayList<>();
+
+                for(int i=0;i<listData.getForecastList().get(0).getHourly().size();i++){
+                    listHourlies.add(listData.getForecastList().get(0).getHourly().get(i));
+                }
+                mAdapter = new CuacaAdapter(getContext(), listHourlies);
+                if(isAdded()){
                     mRecyclerView.setAdapter(mAdapter);
                 }
+            }
 
-                @Override
-                public void onFailure(Throwable throwable) {
-                    Log.v(TAG, throwable.getMessage());
-                }
-            });
-
-        }
+            @Override
+            public void onFailure(Call<DataWWO> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -156,35 +189,6 @@ public class CuacaTempFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public static String setWeatherIcon(int actualId, long sunrise, long sunset){
-        int id = actualId / 100;
-        String icon = "";
-        if(actualId == 800){
-            long currentTime = new Date().getTime();
-            if(currentTime>=sunrise && currentTime<sunset) {
-                icon = "&#xf00d;";
-            } else {
-                icon = "&#xf02e;";
-            }
-        } else {
-            switch(id) {
-                case 2 : icon = "&#xf01e;";
-                    break;
-                case 3 : icon = "&#xf01c;";
-                    break;
-                case 7 : icon = "&#xf014;";
-                    break;
-                case 8 : icon = "&#xf013;";
-                    break;
-                case 6 : icon = "&#xf01b;";
-                    break;
-                case 5 : icon = "&#xf019;";
-                    break;
-            }
-        }
-        return icon;
-    }
-
     @Override
     public void onClick(View view) {
         if (view == placePicker){
@@ -192,7 +196,6 @@ public class CuacaTempFragment extends Fragment implements View.OnClickListener 
             try {
                 //menjalankan place picker
                 startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-
                 // check apabila <a title="Solusi Tidak Bisa Download Google Play Services di Android" href="http://www.twoh.co/2014/11/solusi-tidak-bisa-download-google-play-services-di-android/" target="_blank">Google Play Services tidak terinstall</a> di HP
             } catch (GooglePlayServicesRepairableException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -202,4 +205,21 @@ public class CuacaTempFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST){
+            if (resultCode == getActivity().RESULT_OK){
+                Place place = PlacePicker.getPlace(getActivity(),data);
+                mLongitude = place.getLatLng().longitude;
+                mLatitude = place.getLatLng().latitude;
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.longtitude), mLongitude.toString());
+                editor.putString(getString(R.string.latitude), mLatitude.toString());
+                editor.commit();
+
+                getList();
+            }
+        }
+    }
+
 }

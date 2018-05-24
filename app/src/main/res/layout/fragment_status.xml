@@ -40,22 +40,48 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Status Sistem : Mati"
+                    android:text="Sistem Jemuran"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/waktuMulai"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="10:40 WIB"
-                    android:textColor="@android:color/darker_gray" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Switch
-                    android:id="@+id/switchSistem"
+                    android:id="@+id/switchSistemJemuran"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:background="@color/colorTransparant">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/sistem_maling"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Sistem Anti Maling"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Switch
+                    android:id="@+id/switchSistemAntiMaling"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

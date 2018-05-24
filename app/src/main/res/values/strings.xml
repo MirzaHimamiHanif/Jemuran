@@ -18,4 +18,7 @@
     <string name="loginTxt">Login</string>
     <string name="OPEN_WEATHER_MAP_API_KEY">cd2d12b0938ed8aaa0bb9159cc11eb54</string>
     <string name="google_maps_key">AIzaSyAkD_gUbW4mEYFffIY4SWfyZTJmifT31p8</string>
+    <string name="wwo_api_key">5b7e8f4eae6f49afb8164444182305</string>
+    <string name="longtitude">longtitude</string>
+    <string name="latitude">latitude</string>
 </resources>

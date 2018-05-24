@@ -12,16 +12,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.pindad.jemuran.Cuaca.ListCuaca;
+import org.pindad.jemuran.Cuaca.ModelCuacaApi.ModelForecast.ListHourly;
+import org.pindad.jemuran.History.ModelHistory.ListHistory;
 import org.pindad.jemuran.R;
 
 import java.util.List;
 
 public class CuacaAdapter extends RecyclerView.Adapter<CuacaAdapter.ViewHolder> {
-    private List<ListCuaca> listItems;
+    private List<ListHourly> listItems;
     private Context mContext;
 
-    public CuacaAdapter(Context context, List<ListCuaca> List) {
+    public CuacaAdapter(Context context, List<ListHourly> List) {
         mContext = context;
         listItems = List;
     }
@@ -35,9 +39,11 @@ public class CuacaAdapter extends RecyclerView.Adapter<CuacaAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.details_field.setText(listItems.get(position).getDate());
-        holder.weather_icon.setText(listItems.get(position).getWeather());
-        holder.current_temperature_field.setText(listItems.get(position).getTemperature());
+        holder.details_field.setText(listItems.get(position).getTime());
+        Glide.with(mContext)
+                .load(listItems.get(position).getWeatherIconUrl().get(0).getValue())
+                .into(holder.weather_icon);
+        holder.current_temperature_field.setText(listItems.get(position).getTempC());
     }
 
     @Override
@@ -50,16 +56,15 @@ public class CuacaAdapter extends RecyclerView.Adapter<CuacaAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView details_field, weather_icon, current_temperature_field;
+        public TextView details_field, current_temperature_field;
+        public ImageView weather_icon;
         Typeface weatherFont;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            weatherFont = Typeface.createFromAsset(mContext.getAssets(), "fonts/weathericons-regular-webfont.ttf");
             details_field = (TextView) itemView.findViewById(R.id.details_field);
-            weather_icon = (TextView) itemView.findViewById(R.id.weather_icon);
+            weather_icon = (ImageView) itemView.findViewById(R.id.weather_icon);
             current_temperature_field = (TextView) itemView.findViewById(R.id.current_temperature_field);
-            weather_icon.setTypeface(weatherFont);
         }
     }
 }

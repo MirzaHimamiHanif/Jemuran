@@ -5,40 +5,40 @@ package org.pindad.jemuran.Status.ModelStatus;
  */
 
 public class ListStatus {
-    private long alarm;
-    private long atap;
-    private long kipas;
+    private boolean alarm;
+    private boolean atap;
+    private boolean kipas;
 
     public ListStatus() {
     }
 
-    public ListStatus(long alarm, long atap, long kipas) {
+    public ListStatus(boolean alarm, boolean atap, boolean kipas) {
         this.alarm = alarm;
         this.atap = atap;
         this.kipas = kipas;
     }
 
-    public long getAlarm() {
+    public boolean getAlarm() {
         return alarm;
     }
 
-    public void setAlarm(long alarm) {
+    public void setAlarm(boolean alarm) {
         this.alarm = alarm;
     }
 
-    public long getAtap() {
+    public boolean getAtap() {
         return atap;
     }
 
-    public void setAtap(long atap) {
+    public void setAtap(boolean atap) {
         this.atap = atap;
     }
 
-    public long getKipas() {
+    public boolean getKipas() {
         return kipas;
     }
 
-    public void setKipas(long kipas) {
+    public void setKipas(boolean kipas) {
         this.kipas = kipas;
     }
 }

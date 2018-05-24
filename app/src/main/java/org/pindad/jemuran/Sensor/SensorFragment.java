@@ -70,8 +70,8 @@ public class SensorFragment extends Fragment {
 
     }
 
-    public TextView setTextView(TextView textView, long status){
-        if (status==0){
+    public TextView setTextView(TextView textView, boolean status){
+        if (status==false){
             textView.setText("OFF");
         }else{
             textView.setText("ON");

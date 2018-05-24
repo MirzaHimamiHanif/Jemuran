@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mUsername, mPassword;
     private Button mLogin;
+    private ProgressBar progressBar;
     private String username, password;
     FirebaseDatabase database;
     DatabaseReference myRef, myRef2;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        progressBar = (ProgressBar) findViewById(R.id.progressLogin);
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mLogin =(Button) findViewById(R.id.btn_login);
@@ -54,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 username = mUsername.getText().toString();
                 password = mPassword.getText().toString();
+                progressBar.setVisibility(View.VISIBLE);
                 signIn();
             }
         });
@@ -64,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         SharedPreferences sharedPref = getSharedPreferences("Shared Preference", Context.MODE_PRIVATE);
         if (sharedPref.getString("username", null)!=null){
+            progressBar.setVisibility(View.VISIBLE);
             updateUI();
         }
     }
@@ -88,17 +93,21 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(getString(R.string.username), username);
                         editor.commit();
                         updateUI();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Password Salah", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Username Tidak Ada", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
+                progressBar.setVisibility(View.INVISIBLE);
             }
-
         });
     }
 }
