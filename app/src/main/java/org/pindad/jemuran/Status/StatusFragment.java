@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +28,8 @@ import org.pindad.jemuran.R;
  */
 
 public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
-    private TextView mAlarm, mAtap, mKipas, mSistemJemuran, mSistemAntiMaling;
+    private TextView mAlarm, mAtap, mKipas;
+    private Switch mSistemJemuran, mSistemAntiMaling;
     private ImageView lemari;
     private ListStatus mListStatus;
     private ListSistem mListSistem;
@@ -59,6 +61,8 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                 startActivity(intent);
             }
         });
+        mSistemAntiMaling.setOnCheckedChangeListener(this);
+        mSistemJemuran.setOnCheckedChangeListener(this);
         firebaseSetUp();
         return view ;
     }
@@ -85,6 +89,19 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+        myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mListSistem = dataSnapshot.getValue(ListSistem.class);
+                mSistemJemuran.setChecked(mListSistem.getSistem_jemuran());
+                mSistemAntiMaling.setChecked(mListSistem.getSistem_anti_maling());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private TextView setTextView(TextView textView, boolean status){
@@ -99,12 +116,11 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (compoundButton==mSistemJemuran){
-            mListSistem.setSistem_jemuran(b);
+            myRef2.child("sistem_jemuran").setValue(b);
         }
         if (compoundButton==mSistemAntiMaling){
-            mListSistem.setSistem_anti_maling(b);
+            myRef2.child("sistem_anti_maling").setValue(b);
         }
-        myRef2.setValue(mListSistem);
     }
 
 }
