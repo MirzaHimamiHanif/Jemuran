@@ -1,4 +1,4 @@
-package org.pindad.jemuran.adapter;
+package org.pindad.jemuran.history.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.pindad.jemuran.history.ModelHistory.ListHistory;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
 
 import java.util.Calendar;

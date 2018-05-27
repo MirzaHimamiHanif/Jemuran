@@ -1,4 +1,4 @@
-package org.pindad.jemuran.history.ModelHistory;
+package org.pindad.jemuran.history.modelhistory;
 
 public class ListHistory {
     long waktu_akhir;

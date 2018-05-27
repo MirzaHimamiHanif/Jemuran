@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.pindad.jemuran.cuaca.datacuaca.GetCuacaData;
 import org.pindad.jemuran.history.HistoryActivity;
 import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.home.sistem.SistemViewModel;
+import org.pindad.jemuran.home.sistem.datasistem.GetSistemData;
 import org.pindad.jemuran.home.sistem.modelsistem.ListSistem;
 import org.pindad.jemuran.home.status.modelstatus.ListStatus;
 import org.pindad.jemuran.R;
@@ -101,15 +103,12 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        FirebaseDatabase database;
-        DatabaseReference myRef;
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(SaveSharedPreference.getUserName(getContext())).child("sistem");
-        if (compoundButton==mSistemJemuran){
-            myRef.child("sistem_jemuran").setValue(b);
+        GetSistemData getSistemData = new GetSistemData();
+         if (compoundButton==mSistemJemuran){
+             getSistemData.pushSistem(b, "sistem_jemuran");
         }
         if (compoundButton==mSistemAntiMaling){
-            myRef.child("sistem_anti_maling").setValue(b);
+            getSistemData.pushSistem(b, "sistem_anti_maling");
         }
     }
 

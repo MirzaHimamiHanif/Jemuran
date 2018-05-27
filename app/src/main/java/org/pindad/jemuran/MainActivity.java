@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -24,10 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.pindad.jemuran.authentification.LoginActivity;
+import org.pindad.jemuran.cuaca.CekLokasi;
 import org.pindad.jemuran.cuaca.CuacaTempFragment;
+import org.pindad.jemuran.cuaca.datacuaca.GetCuacaData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.DataWWO;
 import org.pindad.jemuran.cuaca.modelcuacaapi.ListData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
+import org.pindad.jemuran.util.MyApplication;
 import org.pindad.jemuran.util.rest.ApiClient;
 import org.pindad.jemuran.util.rest.ApiInterface;
 import org.pindad.jemuran.home.sistem.modelsistem.ListSistem;
@@ -35,10 +39,16 @@ import org.pindad.jemuran.home.status.modelstatus.ListStatus;
 import org.pindad.jemuran.home.StatusFragment;
 import org.pindad.jemuran.sensor.SensorFragment;
 import org.pindad.jemuran.util.BottomNavigationViewHelper;
+import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,8 +90,9 @@ public class MainActivity extends AppCompatActivity{
                 .replace(R.id.container, statusFragment)
                 .commit();
         NavBotClicked();
+        CekLokasi cekLokasi = new CekLokasi(this);
+        cekLokasi.cek();
         setAlarm();
-        getList();
         getUsername();
     }
     public void getUsername(){
@@ -139,21 +150,25 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void getLocation() {
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         }else{
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            try{
-                mLatitude = location.getLatitude();
-                mLongitude = location.getLongitude();
-            }catch (Exception e){
-
-            }
+            SaveSharedPreference.setLatitude(MyApplication.getAppContext(),String.valueOf(location.getLatitude()));
+            SaveSharedPreference.setLongtitude(MyApplication.getAppContext(),String.valueOf(location.getLongitude()));
         }
     }
 
+    private void cekLokasi(){
+        sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        if(sharedPref.getString(getString(R.string.longtitude), null)!=null){
+        }else {
+            getLocation();
+        }
+        Toast.makeText(getApplicationContext(), SaveSharedPreference.getLatitude(getApplication()),Toast.LENGTH_LONG).show();
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -242,13 +257,37 @@ public class MainActivity extends AppCompatActivity{
         return time;
     }
 
-    private void cekLokasi(){
-        sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        if(sharedPref.getString(getString(R.string.longtitude), null)!=null){
-            mLongitude = Double.parseDouble(sharedPref.getString(getString(R.string.longtitude), null));
-            mLatitude = Double.parseDouble(sharedPref.getString(getString(R.string.latitude), null));
-        }else {
-            getLocation();
-        }
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final CompositeDisposable disposables = new CompositeDisposable();
+
+    private void doSomeWork() {
+        disposables.add(getObservable()
+                // Run on a background thread
+                .subscribeOn(Schedulers.io())
+                // Be notified on the main thread
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(getObserver()));
+    }
+
+    private Observable<? extends Long> getObservable() {
+        return Observable.just(new Long(5));
+    }
+    private DisposableObserver<Long> getObserver() {
+        return new DisposableObserver<Long>() {
+            @Override
+            public void onNext(Long value) {
+                Log.d(TAG, " onNext : value : " + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, " onError : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, " onComplete");
+            }
+        };
     }
 }

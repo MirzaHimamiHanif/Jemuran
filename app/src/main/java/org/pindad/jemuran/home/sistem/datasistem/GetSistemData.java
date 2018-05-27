@@ -24,7 +24,7 @@ public class GetSistemData {
         DatabaseReference myRef;
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext())).child("sistem");
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try{
@@ -39,6 +39,13 @@ public class GetSistemData {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+    }
+    public void pushSistem(boolean b, String x){
+        FirebaseDatabase database;
+        DatabaseReference myRef;
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext())).child("sistem");
+        myRef.child(x).setValue(b);
     }
     public void registerInteractot(Interactor networkInteractor){
         this.interactor = networkInteractor;
