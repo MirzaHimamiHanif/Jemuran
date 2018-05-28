@@ -6,23 +6,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.pindad.jemuran.history.modelhistory.ListDataTanggal;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by WIDHIYANTO NUGROHO on 15/04/2018.
  */
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
-    private List<ListHistory> listItems;
+    private List<ListDataTanggal> listItems;
     private Context mContext;
 
-    public HistoryAdapter(Context context, List<ListHistory> List) {
+    public HistoryAdapter(Context context, List<ListDataTanggal> List) {
         mContext = context;
         listItems = List;
     }
@@ -37,10 +43,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nomer.setText((position+1)+"");
-        holder.tanggal.setText(convertDate(listItems.get(position).getWaktu_awal()).toString());
-        holder.awal.setText(getHour(convertDate(listItems.get(position).getWaktu_awal())));
-        holder.akhir.setText(getHour(convertDate(listItems.get(position).getWaktu_akhir())));
-        holder.rata.setText(listItems.get(position).getWaktu_rata()+"");
+        holder.tanggal.setText(listItems.get(position).getTanggal());
+        holder.awal.setText(listItems.get(position).getWaktuMulai());
+        holder.akhir.setText(listItems.get(position).getWaktuAkhir());
+        holder.rata.setText(listItems.get(position).getJumlahWaktu());
     }
 
     @Override
@@ -65,15 +71,4 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
-    public Date convertDate(long tanggal){
-        return new Date(tanggal * 1000);
-    }
-    public String getHour(Date date){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int hours = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
-
-        return hours + " : " + minute;
-    }
 }

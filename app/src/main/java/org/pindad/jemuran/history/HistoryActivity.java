@@ -10,18 +10,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.pindad.jemuran.cuaca.modelcuacaapi.ListData;
 import org.pindad.jemuran.history.adapter.HistoryAdapter;
+import org.pindad.jemuran.history.modelhistory.ListDataTanggal;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -42,22 +48,6 @@ public class HistoryActivity extends AppCompatActivity {
 //        mChart.setOnChartGestureListener(HistoryBulanFragment.this);
 //        mChart.setOnChartValueSelectedListener(HistoryBulanFragment.this);
 
-        mChart.setDragEnabled(false);
-        mChart.setScaleEnabled(false);
-
-        ArrayList<Entry> yValue = new ArrayList<>();
-//
-        yValue.add(new Entry(2, (int) 3000f));
-        yValue.add(new Entry(3, (int) 4000f));
-        yValue.add(new Entry(4, (int) 3500f));
-        yValue.add(new Entry(5, (int) 4000f));
-        yValue.add(new Entry(6, (int) 4500f));
-        yValue.add(new Entry(7, (int) 4000f));
-        yValue.add(new Entry(8, (int) 3500f));
-        yValue.add(new Entry(9, (int) 4500f));
-        yValue.add(new Entry(10, (int) 4000f));
-        yValue.add(new Entry(11, (int) 4500f));
-        yValue.add(new Entry(12, (int) 4000f));
 
         ArrayList<String> xValue = new ArrayList<String>();
 
@@ -81,7 +71,41 @@ public class HistoryActivity extends AppCompatActivity {
 //        yValue.add("Nov");
 //        yValue.add("Des");
 
-        LineDataSet set1 = new LineDataSet(yValue,"Lama Proses Penjemuran");
+        firebaseSetUp();
+    }
+    private void firebaseSetUp() {
+        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
+        historyViewModel.getListHistoryMutableLiveData().observe(this, new Observer<ArrayList<ListDataTanggal>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<ListDataTanggal> listHistories) {
+                setRecyclerView(listHistories);
+                setGrafik(listHistories);
+            }
+        });
+    }
+
+    private void setGrafik(ArrayList<ListDataTanggal> listDataTanggal){
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+
+        final HashMap<Integer, String>numMap = new HashMap<>();
+
+        ArrayList<Entry> setValue = new ArrayList<>();
+        for (int i=0; i<listDataTanggal.size(); i++){
+            numMap.put(i,listDataTanggal.get(i).getTanggal());
+            setValue.add(new Entry(i, Integer.parseInt(listDataTanggal.get(i).getJumlahWaktu())));
+        }
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return numMap.get((int)value);
+            }
+        });
+
+        LineDataSet set1 = new LineDataSet(setValue,"Lama Proses Penjemuran (Jam)");
 
         set1.setFillAlpha(110);
         set1.setColor(Color.BLUE);
@@ -93,18 +117,12 @@ public class HistoryActivity extends AppCompatActivity {
         LineData data = new LineData(dataSets);
 
         mChart.setData(data);
-        firebaseSetUp();
     }
-    private void firebaseSetUp() {
-        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
-        historyViewModel.getListHistoryMutableLiveData().observe(this, new Observer<ArrayList<ListHistory>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<ListHistory> listHistories) {
-                HistoryAdapter adapter=new HistoryAdapter(getApplicationContext(), listHistories );
-                recyclerView.setAdapter(adapter);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            }
-        });
+
+    private void setRecyclerView(ArrayList<ListDataTanggal> listDataTanggal){
+        HistoryAdapter adapter=new HistoryAdapter(getApplicationContext(), listDataTanggal );
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }

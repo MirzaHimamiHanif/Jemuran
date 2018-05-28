@@ -40,7 +40,11 @@ public class GetCuacaData {
         call.enqueue(new Callback<DataWWO>() {
             @Override
             public void onResponse(Call<DataWWO> call, Response<DataWWO> response) {
-                interactor.onSyncData(response.body().getData());
+                try {
+                    interactor.onSyncData(response.body().getData());
+                }catch (Exception e){
+
+                }
             }
 
             @Override
