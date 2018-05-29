@@ -1,40 +1,40 @@
 package org.pindad.jemuran.history.modelhistory;
 
 public class ListHistory {
-    long waktu_akhir;
-    long waktu_awal;
-    long waktu_rata;
+    private String tanggal;
+    private long kelembapan;
+    private long suhu;
 
     public ListHistory() {
     }
 
-    public ListHistory(long waktu_akhir, long waktu_awal, long waktu_rata) {
-        this.waktu_akhir = waktu_akhir;
-        this.waktu_awal = waktu_awal;
-        this.waktu_rata = waktu_rata;
+    public ListHistory(String tanggal, long kelembapan, long suhu) {
+        this.tanggal = tanggal;
+        this.kelembapan = kelembapan;
+        this.suhu = suhu;
     }
 
-    public long getWaktu_akhir() {
-        return waktu_akhir;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setWaktu_akhir(long waktu_akhir) {
-        this.waktu_akhir = waktu_akhir;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
-    public long getWaktu_awal() {
-        return waktu_awal;
+    public long getKelembapan() {
+        return kelembapan;
     }
 
-    public void setWaktu_awal(long waktu_awal) {
-        this.waktu_awal = waktu_awal;
+    public void setKelembapan(long kelembapan) {
+        this.kelembapan = kelembapan;
     }
 
-    public long getWaktu_rata() {
-        return waktu_rata;
+    public long getSuhu() {
+        return suhu;
     }
 
-    public void setWaktu_rata(long waktu_rata) {
-        this.waktu_rata = waktu_rata;
+    public void setSuhu(long suhu) {
+        this.suhu = suhu;
     }
 }

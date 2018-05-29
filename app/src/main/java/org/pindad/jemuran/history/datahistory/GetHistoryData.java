@@ -31,23 +31,14 @@ public class GetHistoryData {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<ListHistory> listHistory = new ArrayList<>();
-                ArrayList<ListDataTanggal> listDataTanggal = new ArrayList<>();
-                int i = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     try {
                         listHistory.add(snapshot.getValue(ListHistory.class));
-                        listDataTanggal
-                                .add(new ListDataTanggal(
-                                        getHari(listHistory.get(i).getWaktu_awal()),
-                                        getHour(listHistory.get(i).getWaktu_awal()),
-                                        getHour(listHistory.get(i).getWaktu_akhir()),
-                                        String.valueOf(listHistory.get(i).getWaktu_rata())));
-                        i++;
                     }catch (Exception e){
 
                     }
                 }
-                interactor.onSyncArrayHistory(listDataTanggal);
+                interactor.onSyncArrayHistory(listHistory);
             }
 
             @Override
@@ -58,16 +49,6 @@ public class GetHistoryData {
 
     }
 
-    public String getHour(long tanggal){
-        Date date = new Date(tanggal*1000);
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-        return df.format(date);
-    }
-    public String getHari(long tanggal){
-        Date date = new Date(tanggal*1000);
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        return df.format(date);
-    }
     public void registerInteractot(Interactor networkInteractor){
         this.interactor = networkInteractor;
     }

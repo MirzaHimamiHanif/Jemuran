@@ -39,7 +39,6 @@ public class SensorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sensor, container, false);
         mStatusGetar = view.findViewById(R.id.statusGetar);
         mStatusHujan = view.findViewById(R.id.statusHujan);
-        sensorViewModel = ViewModelProviders.of(getActivity()).get(SensorViewModel.class);
         mListSensor = new ListSensor();
 
         sensorFirebase();
@@ -47,6 +46,7 @@ public class SensorFragment extends Fragment {
     }
 
     private void sensorFirebase() {
+        sensorViewModel = ViewModelProviders.of(getActivity()).get(SensorViewModel.class);
         sensorViewModel.getListSensorMutableLiveData().observe(getActivity(), new Observer<ListSensor>() {
             @Override
             public void onChanged(@Nullable ListSensor listSensor) {

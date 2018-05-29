@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.pindad.jemuran.history.modelhistory.ListDataTanggal;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
 
@@ -25,10 +25,10 @@ import java.util.TimeZone;
  */
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
-    private List<ListDataTanggal> listItems;
+    private List<ListHistory> listItems;
     private Context mContext;
 
-    public HistoryAdapter(Context context, List<ListDataTanggal> List) {
+    public HistoryAdapter(Context context, List<ListHistory> List) {
         mContext = context;
         listItems = List;
     }
@@ -42,11 +42,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.nomer.setText((position+1)+"");
-        holder.tanggal.setText(listItems.get(position).getTanggal());
-        holder.awal.setText(listItems.get(position).getWaktuMulai());
-        holder.akhir.setText(listItems.get(position).getWaktuAkhir());
-        holder.rata.setText(listItems.get(position).getJumlahWaktu());
+        try {
+            String[] temp = splitString(listItems.get(position).getTanggal());
+            holder.nomer.setText((position+1)+"");
+            holder.tanggal.setText(temp[0]);
+            holder.jam.setText(temp[1]);
+            holder.suhu.setText(String.valueOf(listItems.get(position).getSuhu()));
+            holder.kelembapan.setText(String.valueOf(listItems.get(position).getKelembapan()));
+        }catch (Exception e){
+
+        }
     }
 
     @Override
@@ -58,16 +63,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
+    public String[] splitString(String tanggal){
+        return tanggal.split(" ");
+    }
+    
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nomer, tanggal, awal, akhir, rata;
+        public TextView nomer, tanggal, jam, suhu, kelembapan;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nomer = itemView.findViewById(R.id.number);
             tanggal = itemView.findViewById(R.id.tanggal_jemuran);
-            awal = itemView.findViewById(R.id.waktuMulai);
-            akhir = itemView.findViewById(R.id.waktuAkhir);
-            rata = itemView.findViewById(R.id.waktu);
+            jam = itemView.findViewById(R.id.jam);
+            suhu = itemView.findViewById(R.id.suhu);
+            kelembapan = itemView.findViewById(R.id.kelembapan);
         }
     }
 

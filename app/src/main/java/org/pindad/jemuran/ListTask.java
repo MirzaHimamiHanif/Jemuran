@@ -1,33 +1,32 @@
 package org.pindad.jemuran;
 
-public class ListTask {
-    private boolean sistemJemuran;
-    private boolean statusAtap;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
+
+import java.util.ArrayList;
+
+public class ListTask implements Parcelable{
+    private String time;
     private String weatherDesc;
 
     public ListTask() {
+
     }
 
-    public ListTask(boolean sistemJemuran, boolean statusAtap, String weatherDesc) {
-        this.sistemJemuran = sistemJemuran;
-        this.statusAtap = statusAtap;
+    public ListTask(String time, String weatherDesc) {
+        this.time = time;
         this.weatherDesc = weatherDesc;
     }
 
-    public boolean isSistemJemuran() {
-        return sistemJemuran;
+    public String getTime() {
+        return time;
     }
 
-    public void setSistemJemuran(boolean sistemJemuran) {
-        this.sistemJemuran = sistemJemuran;
-    }
-
-    public boolean isStatusAtap() {
-        return statusAtap;
-    }
-
-    public void setStatusAtap(boolean statusAtap) {
-        this.statusAtap = statusAtap;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getWeatherDesc() {
@@ -37,4 +36,32 @@ public class ListTask {
     public void setWeatherDesc(String weatherDesc) {
         this.weatherDesc = weatherDesc;
     }
+
+    public ListTask(Parcel in){
+        String[] data = new String[2];
+
+        in.readStringArray(data);
+        this.time = data[0];
+        this.weatherDesc = data[1];
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {this.time,
+                this.weatherDesc});
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public ListTask createFromParcel(Parcel in) {
+            return new ListTask(in);
+        }
+
+        public ListTask[] newArray(int size) {
+            return new ListTask[size];
+        }
+    };
 }

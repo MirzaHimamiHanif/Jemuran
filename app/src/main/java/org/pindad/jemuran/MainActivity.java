@@ -1,19 +1,29 @@
 package org.pindad.jemuran;
 
+import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,10 +37,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.pindad.jemuran.authentification.LoginActivity;
 import org.pindad.jemuran.cuaca.CekLokasi;
 import org.pindad.jemuran.cuaca.CuacaTempFragment;
+import org.pindad.jemuran.cuaca.CuacaViewModel;
 import org.pindad.jemuran.cuaca.datacuaca.GetCuacaData;
+import org.pindad.jemuran.cuaca.datacuaca.GetForecastData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.DataWWO;
 import org.pindad.jemuran.cuaca.modelcuacaapi.ListData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
+import org.pindad.jemuran.home.sistem.SistemViewModel;
+import org.pindad.jemuran.home.sistem.datasistem.GetSistemData;
+import org.pindad.jemuran.home.status.StatusViewModel;
+import org.pindad.jemuran.home.status.datastatus.GetStatusData;
+import org.pindad.jemuran.sensor.SensorViewModel;
+import org.pindad.jemuran.sensor.modelsensor.ListSensor;
 import org.pindad.jemuran.util.MyApplication;
 import org.pindad.jemuran.util.rest.ApiClient;
 import org.pindad.jemuran.util.rest.ApiInterface;
@@ -43,10 +61,13 @@ import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -61,16 +82,14 @@ public class MainActivity extends AppCompatActivity{
     private SensorFragment sensorFragment;
     private CuacaTempFragment cuacaFragment;
     public String username;
-    static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
-    public Double mLatitude, mLongitude;
     public ListData listData;
-    public ArrayList<ListHourly> listHourlies;
-    FirebaseDatabase database;
-    public DatabaseReference myRef, myRef2;
-    public ListStatus mListStatus;
-    public ListSistem mListSistem;
-    public SharedPreferences sharedPref;
+    private ArrayList<ListHourly> mListHourlies;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final CompositeDisposable disposables = new CompositeDisposable();
+    private ArrayList<ListStatus> mListStatus;
+    private ArrayList<ListSistem> mListSistem;
+    private ArrayList<ListTask> mListTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +101,7 @@ public class MainActivity extends AppCompatActivity{
         sensorFragment = new SensorFragment();
         statusFragment = new StatusFragment();
         cuacaFragment = new CuacaTempFragment();
-        listHourlies = new ArrayList<>();
-        mListStatus = new ListStatus();
-        mListSistem = new ListSistem();
+        mListHourlies = new ArrayList<>();
         BottomNavigationViewHelper.disableShiftMode(mNavigationView);
         mFragmentManager.beginTransaction()
                 .replace(R.id.container, statusFragment)
@@ -94,6 +111,7 @@ public class MainActivity extends AppCompatActivity{
         cekLokasi.cek();
         setAlarm();
         getUsername();
+        doSomeWork();
     }
     public void getUsername(){
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), this.MODE_PRIVATE);
@@ -149,117 +167,54 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-    public void getLocation() {
-        if(ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        }else{
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            SaveSharedPreference.setLatitude(MyApplication.getAppContext(),String.valueOf(location.getLatitude()));
-            SaveSharedPreference.setLongtitude(MyApplication.getAppContext(),String.valueOf(location.getLongitude()));
-        }
-    }
-
-    private void cekLokasi(){
-        sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        if(sharedPref.getString(getString(R.string.longtitude), null)!=null){
-        }else {
-            getLocation();
-        }
-        Toast.makeText(getApplicationContext(), SaveSharedPreference.getLatitude(getApplication()),Toast.LENGTH_LONG).show();
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_LOCATION :
-                getLocation();
-                break;
-
-        }
-    }
-
     private void setAlarm(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,3);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Intent intent1 = new Intent(MainActivity.this, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(this.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * 3, pendingIntent);
-    }
+        SistemViewModel sistemViewModel;
+        StatusViewModel statusViewModel;
+        CuacaViewModel cuacaViewModel;
 
-    public ListData getList() {
-        cekLokasi();
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<DataWWO> call = apiService.getCurrentWeather("5b7e8f4eae6f49afb8164444182305",
-                mLatitude+","+mLongitude,
-                "json",
-                "2",
-                "no",
-                "yes",
-                "1",
-                "yes");
+        final Intent intent1 = new Intent(MainActivity.this, NotificationReceiver.class);
+        sistemViewModel = ViewModelProviders.of(this).get(SistemViewModel.class);
+        statusViewModel = ViewModelProviders.of(this).get(StatusViewModel.class);
+        cuacaViewModel = ViewModelProviders.of(this).get(CuacaViewModel.class);
 
-        call.enqueue(new Callback<DataWWO>() {
+        statusViewModel.getListStatusMutableLiveData().observe(this, new Observer<ListStatus>() {
             @Override
-            public void onResponse(Call<DataWWO> call, Response<DataWWO> response) {
-                int x = 0;
-                Calendar rightNow = Calendar.getInstance();
-                int cekJam = rightNow.get(Calendar.HOUR_OF_DAY)*100;
-                ArrayList<ListHourly> tempHourly = new ArrayList<>();
-                listData = new ListData();
-                listData = response.body().getData();
-                for (int i=0; i<listData.getForecastList().size(); i++ ){
-                    for(int j=0;j<listData.getForecastList().get(i).getHourly().size();j++){
-                        if(i==0){
-                            String t = listData.getForecastList().get(i).getHourly().get(j).getTime();
-                            int tempNum = Integer.parseInt(t);
-                            if (tempNum>cekJam){
-                                x++;
-                                tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
-                            }
-                        }else {
-                            tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
-                            x++;
-                            if (x==25){
-                                break;
-                            }
-                        }
-                    }
-                }
-                listHourlies = tempHourly;
-                String cek;
-                for (int i=0; i<listHourlies.size(); i++){
-                    cek = listHourlies.get(i).getTime();
-                    listHourlies.get(i).setTime(timeChange(cek));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DataWWO> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onChanged(@Nullable ListStatus listStatus) {
+                ArrayList<ListStatus> tempListStatus = new ArrayList<>();
+                tempListStatus.add(listStatus);
+                mListStatus = tempListStatus;
             }
         });
-        return listData;
-    }
+        cuacaViewModel.getListForecastMutableLiveData().observe(this, new Observer<ArrayList<ListHourly>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<ListHourly> listHourlies) {
+                mListHourlies = listHourlies;
+                intent1.putExtra("desc", mListHourlies.get(2).getWeatherDesc().get(0).getValue());
+            }
+        });
 
-    private String timeChange(String time){
-        if (time.equals("0")){
-            time = "00:00";
-        }else if (time.length()==3){
-            time = new StringBuilder().append("0").append(time.charAt(0)).append(":").append(time.charAt(1)).append(time.charAt(2)).toString();
-        }else if (time.length()==4){
-            time = new StringBuilder().append(time.charAt(0)).append(time.charAt(1)).append(":").append(time.charAt(2)).append(time.charAt(3)).toString();
+        for (int i=0; i<mListHourlies.size();i++){
+            mListTask.add(new ListTask(mListHourlies.get(i).getTime(),mListHourlies.get(i).getWeatherDesc().get(0).getValue()));
         }
-        return time;
+
+        sistemViewModel.getListSistemMutableLiveData().observe(this, new Observer<ListSistem>() {
+            @Override
+            public void onChanged(@Nullable ListSistem listSistem) {
+                ArrayList<ListSistem> tempListSistem = new ArrayList<>();
+                tempListSistem.add(listSistem);
+                mListSistem = tempListSistem;
+            }
+        });
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)-1);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        intent1.putExtra("tes", false);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(getApplication().ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 2, pendingIntent);
     }
-
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private final CompositeDisposable disposables = new CompositeDisposable();
-
     private void doSomeWork() {
         disposables.add(getObservable()
                 // Run on a background thread
@@ -269,13 +224,21 @@ public class MainActivity extends AppCompatActivity{
                 .subscribeWith(getObserver()));
     }
 
-    private Observable<? extends Long> getObservable() {
-        return Observable.just(new Long(5));
+    private Observable<? extends Boolean> getObservable() {
+        Boolean bool = false;
+        try {
+            if (mListSistem.get(0).getSistem_jemuran()){
+                bool = true;
+            }
+        }catch (Exception e){
+            Log.d(TAG, " onNext : " + e);
+        }
+        return Observable.just(bool);
     }
-    private DisposableObserver<Long> getObserver() {
-        return new DisposableObserver<Long>() {
+    private DisposableObserver<Boolean> getObserver() {
+        return new DisposableObserver<Boolean>() {
             @Override
-            public void onNext(Long value) {
+            public void onNext(Boolean value) {
                 Log.d(TAG, " onNext : value : " + value);
             }
 
@@ -290,4 +253,5 @@ public class MainActivity extends AppCompatActivity{
             }
         };
     }
+
 }

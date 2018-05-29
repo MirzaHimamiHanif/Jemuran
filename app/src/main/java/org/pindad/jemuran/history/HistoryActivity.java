@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.pindad.jemuran.cuaca.modelcuacaapi.ListData;
 import org.pindad.jemuran.history.adapter.HistoryAdapter;
-import org.pindad.jemuran.history.modelhistory.ListDataTanggal;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
 
@@ -75,52 +75,51 @@ public class HistoryActivity extends AppCompatActivity {
     }
     private void firebaseSetUp() {
         historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
-        historyViewModel.getListHistoryMutableLiveData().observe(this, new Observer<ArrayList<ListDataTanggal>>() {
+        historyViewModel.getListHistoryMutableLiveData().observe(this, new Observer<ArrayList<ListHistory>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<ListDataTanggal> listHistories) {
+            public void onChanged(@Nullable ArrayList<ListHistory> listHistories) {
                 setRecyclerView(listHistories);
-                setGrafik(listHistories);
             }
         });
     }
 
-    private void setGrafik(ArrayList<ListDataTanggal> listDataTanggal){
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+//    private void setGrafik(ArrayList<ListHistory> ListHistory){
+//        mChart.setDragEnabled(true);
+//        mChart.setScaleEnabled(true);
+//
+//        final HashMap<Integer, String>numMap = new HashMap<>();
+//
+//        ArrayList<Entry> setValue = new ArrayList<>();
+//        for (int i=0; i<ListHistory.size(); i++){
+//            numMap.put(i,ListHistory.get(i).getTanggal());
+//            setValue.add(new Entry(i, Integer.parseInt(ListHistory.get(i).getJumlahWaktu())));
+//        }
+//
+//        XAxis xAxis = mChart.getXAxis();
+//        xAxis.setGranularity(1f);
+//        xAxis.setValueFormatter(new IAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                return numMap.get((int)value);
+//            }
+//        });
+//
+//        LineDataSet set1 = new LineDataSet(setValue,"Lama Proses Penjemuran (Jam)");
+//
+//        set1.setFillAlpha(110);
+//        set1.setColor(Color.BLUE);
+//        set1.setLineWidth(3f);
+//
+//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+//        dataSets.add(set1);
+//
+//        LineData data = new LineData(dataSets);
+//
+//        mChart.setData(data);
+//    }
 
-        final HashMap<Integer, String>numMap = new HashMap<>();
-
-        ArrayList<Entry> setValue = new ArrayList<>();
-        for (int i=0; i<listDataTanggal.size(); i++){
-            numMap.put(i,listDataTanggal.get(i).getTanggal());
-            setValue.add(new Entry(i, Integer.parseInt(listDataTanggal.get(i).getJumlahWaktu())));
-        }
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return numMap.get((int)value);
-            }
-        });
-
-        LineDataSet set1 = new LineDataSet(setValue,"Lama Proses Penjemuran (Jam)");
-
-        set1.setFillAlpha(110);
-        set1.setColor(Color.BLUE);
-        set1.setLineWidth(3f);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-
-        LineData data = new LineData(dataSets);
-
-        mChart.setData(data);
-    }
-
-    private void setRecyclerView(ArrayList<ListDataTanggal> listDataTanggal){
-        HistoryAdapter adapter=new HistoryAdapter(getApplicationContext(), listDataTanggal );
+    private void setRecyclerView(ArrayList<ListHistory> ListHistory){
+        HistoryAdapter adapter=new HistoryAdapter(getApplicationContext(), ListHistory );
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

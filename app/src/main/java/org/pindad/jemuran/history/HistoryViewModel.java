@@ -5,15 +5,15 @@ import android.arch.lifecycle.ViewModel;
 
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
 import org.pindad.jemuran.history.datahistory.GetHistoryData;
-import org.pindad.jemuran.history.modelhistory.ListDataTanggal;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.util.Interactor;
 
 import java.util.ArrayList;
 
-public class HistoryViewModel extends ViewModel implements Interactor<ListDataTanggal> {
+public class HistoryViewModel extends ViewModel implements Interactor<ListHistory> {
     GetHistoryData getHistoryData;
-    MutableLiveData<ArrayList<ListDataTanggal>> listHistoryMutableLiveData;
+    MutableLiveData<ArrayList<ListHistory>> listHistoryMutableLiveData;
 
     public HistoryViewModel(){
         listHistoryMutableLiveData = new MutableLiveData<>();
@@ -22,7 +22,7 @@ public class HistoryViewModel extends ViewModel implements Interactor<ListDataTa
         getHistoryData.syncHistory();
     }
     @Override
-    public void onSyncData(ListDataTanggal data) {
+    public void onSyncData(ListHistory data) {
 
     }
 
@@ -32,16 +32,16 @@ public class HistoryViewModel extends ViewModel implements Interactor<ListDataTa
     }
 
     @Override
-    public void onSyncArrayHistory(ArrayList<ListDataTanggal> data) {
+    public void onSyncArrayHistory(ArrayList<ListHistory> data) {
         listHistoryMutableLiveData.setValue(data);
     }
 
     @Override
-    public void onFailed(ListDataTanggal error) {
+    public void onFailed(ListHistory error) {
 
     }
 
-    public MutableLiveData<ArrayList<ListDataTanggal>> getListHistoryMutableLiveData() {
+    public MutableLiveData<ArrayList<ListHistory>> getListHistoryMutableLiveData() {
         return listHistoryMutableLiveData;
     }
 }

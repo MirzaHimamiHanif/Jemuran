@@ -77,7 +77,6 @@ public class Function extends Fragment implements View.OnClickListener {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.forecast);
         mLayoutManager  = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        setData(((MainActivity)getActivity()).listData, ((MainActivity)getActivity()).listHourlies);
         placePicker.setOnClickListener(this);
         return view;
     }
