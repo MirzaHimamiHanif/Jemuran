@@ -1,4 +1,4 @@
-package org.pindad.jemuran.adapter;
+package org.pindad.jemuran.cuaca.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;

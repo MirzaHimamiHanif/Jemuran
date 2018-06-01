@@ -33,12 +33,10 @@ import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;
  */
 
 public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
-    private TextView mAlarm, mAtap, mKipas;
-    private Switch mSistemJemuran, mSistemAntiMaling;
+    private TextView mAtap, mKipas;
+    private Switch mSistemJemuran;
     private ImageView lemari;
-    private ListStatus mListStatus;
     private ListSistem mListSistem;
-    private Long mBoolSistem;
     boolean cek;
     private StatusViewModel statusViewModel;
     private SistemViewModel sistemViewModel;
@@ -48,16 +46,12 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
         mSistemJemuran = view.findViewById(R.id.switchSistemJemuran);
-        mSistemAntiMaling = view.findViewById(R.id.switchSistemAntiMaling);
-        mAlarm = view.findViewById(R.id.statusAlarm);
         mAtap = view.findViewById(R.id.statusAtap);
         mKipas = view.findViewById(R.id.statusKipas);
-        mListStatus = new ListStatus();
         mListSistem = new ListSistem();
         cek=true;
         statusViewModel = ViewModelProviders.of(getActivity()).get(StatusViewModel.class);
         sistemViewModel = ViewModelProviders.of(getActivity()).get(SistemViewModel.class);
-        mAlarm.setClickable(false);
         lemari = view.findViewById(R.id.lemari);
         lemari.setOnClickListener(new View.OnClickListener(){
 
@@ -68,7 +62,6 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                 startActivity(intent);
             }
         });
-        mSistemAntiMaling.setOnCheckedChangeListener(this);
         mSistemJemuran.setOnCheckedChangeListener(this);
         firebaseSetUp();
         return view ;
@@ -78,16 +71,14 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         statusViewModel.getListStatusMutableLiveData().observe(getActivity(), new Observer<ListStatus>() {
             @Override
             public void onChanged(@Nullable ListStatus listStatus) {
-                setTextView(mAlarm, listStatus.getAlarm());
-                setTextView(mAtap, listStatus.getAtap());
-                setTextView(mKipas, listStatus.getKipas());
+                setTextView(mAtap, listStatus.isAtap());
+                setTextView(mKipas, listStatus.isKipas());
             }
         });
         sistemViewModel.getListSistemMutableLiveData().observe(getActivity(), new Observer<ListSistem>() {
             @Override
             public void onChanged(@Nullable ListSistem listSistem) {
-                mSistemJemuran.setChecked(mListSistem.getSistem_jemuran());
-                mSistemAntiMaling.setChecked(mListSistem.getSistem_anti_maling());
+                mSistemJemuran.setChecked(mListSistem.isSistem_jemuran());
             }
         });
     }
@@ -106,9 +97,6 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         GetSistemData getSistemData = new GetSistemData();
          if (compoundButton==mSistemJemuran){
              getSistemData.pushSistem(b, "sistem_jemuran");
-        }
-        if (compoundButton==mSistemAntiMaling){
-            getSistemData.pushSistem(b, "sistem_anti_maling");
         }
     }
 

@@ -29,15 +29,12 @@ import org.pindad.jemuran.home.status.modelstatus.ListStatus;
 public class SensorFragment extends Fragment {
     ListSensor mListSensor;
     TextView mStatusGetar, mStatusHujan;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
     SensorViewModel sensorViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sensor, container, false);
-        mStatusGetar = view.findViewById(R.id.statusGetar);
         mStatusHujan = view.findViewById(R.id.statusHujan);
         mListSensor = new ListSensor();
 
@@ -50,8 +47,7 @@ public class SensorFragment extends Fragment {
         sensorViewModel.getListSensorMutableLiveData().observe(getActivity(), new Observer<ListSensor>() {
             @Override
             public void onChanged(@Nullable ListSensor listSensor) {
-                setTextView(mStatusGetar,mListSensor.getSensor_getar());
-                setTextView(mStatusHujan,mListSensor.getSensor_hujan());
+                setTextView(mStatusHujan,mListSensor.isSensor_hujan());
             }
         });
     }

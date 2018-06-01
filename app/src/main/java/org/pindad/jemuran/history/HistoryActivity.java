@@ -42,12 +42,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         recyclerView= (RecyclerView) findViewById(R.id.recycler_view);
-        //menampilkan reyclerview yang ada pada file layout dengan id reycler view
         mChart = (LineChart) findViewById(R.id.lineChart1);
-
-//        mChart.setOnChartGestureListener(HistoryBulanFragment.this);
-//        mChart.setOnChartValueSelectedListener(HistoryBulanFragment.this);
-
 
         ArrayList<String> xValue = new ArrayList<String>();
 
@@ -57,20 +52,6 @@ public class HistoryActivity extends AppCompatActivity {
         xValue.add ("April");
         xValue.add ("Mei");
         xValue.add ("Juni");
-////
-//        yValue.add("Jan");
-//        yValue.add("Feb");
-//        yValue.add("Mar");
-//        yValue.add("Apr");
-//        yValue.add("mei");
-//        yValue.add("Jun");
-//        yValue.add("Jul");
-//        yValue.add("Agus");
-//        yValue.add("Sept");
-//        yValue.add("Okt");
-//        yValue.add("Nov");
-//        yValue.add("Des");
-
         firebaseSetUp();
     }
     private void firebaseSetUp() {
@@ -82,41 +63,6 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void setGrafik(ArrayList<ListHistory> ListHistory){
-//        mChart.setDragEnabled(true);
-//        mChart.setScaleEnabled(true);
-//
-//        final HashMap<Integer, String>numMap = new HashMap<>();
-//
-//        ArrayList<Entry> setValue = new ArrayList<>();
-//        for (int i=0; i<ListHistory.size(); i++){
-//            numMap.put(i,ListHistory.get(i).getTanggal());
-//            setValue.add(new Entry(i, Integer.parseInt(ListHistory.get(i).getJumlahWaktu())));
-//        }
-//
-//        XAxis xAxis = mChart.getXAxis();
-//        xAxis.setGranularity(1f);
-//        xAxis.setValueFormatter(new IAxisValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return numMap.get((int)value);
-//            }
-//        });
-//
-//        LineDataSet set1 = new LineDataSet(setValue,"Lama Proses Penjemuran (Jam)");
-//
-//        set1.setFillAlpha(110);
-//        set1.setColor(Color.BLUE);
-//        set1.setLineWidth(3f);
-//
-//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//        dataSets.add(set1);
-//
-//        LineData data = new LineData(dataSets);
-//
-//        mChart.setData(data);
-//    }
 
     private void setRecyclerView(ArrayList<ListHistory> ListHistory){
         HistoryAdapter adapter=new HistoryAdapter(getApplicationContext(), ListHistory );

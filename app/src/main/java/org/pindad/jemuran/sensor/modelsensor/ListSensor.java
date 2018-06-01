@@ -5,27 +5,17 @@ package org.pindad.jemuran.sensor.modelsensor;
  */
 
 public class ListSensor {
-    boolean sensor_getar;
     boolean sensor_hujan;
 
     public ListSensor(){
 
     }
 
-    public ListSensor(boolean sensor_getar, boolean sensor_hujan) {
-        this.sensor_getar = sensor_getar;
+    public ListSensor(boolean sensor_hujan) {
         this.sensor_hujan = sensor_hujan;
     }
 
-    public boolean getSensor_getar() {
-        return sensor_getar;
-    }
-
-    public void setSensor_getar(boolean sensor_getar) {
-        this.sensor_getar = sensor_getar;
-    }
-
-    public boolean getSensor_hujan() {
+    public boolean isSensor_hujan() {
         return sensor_hujan;
     }
 

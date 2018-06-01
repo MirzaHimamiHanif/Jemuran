@@ -6,19 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.pindad.jemuran.history.modelhistory.ListHistory;
-import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.R;
+import org.pindad.jemuran.history.modelhistory.ListHistory;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+
 
 /**
  * Created by WIDHIYANTO NUGROHO on 15/04/2018.

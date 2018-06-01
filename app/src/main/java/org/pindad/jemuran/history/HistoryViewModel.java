@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel;
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
 import org.pindad.jemuran.history.datahistory.GetHistoryData;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
-import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.pindad.jemuran.util.Interactor;
 
 import java.util.ArrayList;

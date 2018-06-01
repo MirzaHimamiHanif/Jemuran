@@ -16,12 +16,15 @@ public class ListHourly {
     private List<ListWeatherIcon> weatherIconUrl;
     @SerializedName("weatherDesc")
     private List<ListWeatherDesc> weatherDesc;
+    @SerializedName("weatherCode")
+    private String weatherCode;
 
-    public ListHourly(String time, String tempC, List<ListWeatherIcon> weatherIconUrl, List<ListWeatherDesc> weatherDesc) {
+    public ListHourly(String time, String tempC, List<ListWeatherIcon> weatherIconUrl, List<ListWeatherDesc> weatherDesc, String weatherCode) {
         this.time = time;
         this.tempC = tempC;
         this.weatherIconUrl = weatherIconUrl;
         this.weatherDesc = weatherDesc;
+        this.weatherCode = weatherCode;
     }
 
     public String getTime() {
@@ -54,5 +57,13 @@ public class ListHourly {
 
     public void setWeatherDesc(List<ListWeatherDesc> weatherDesc) {
         this.weatherDesc = weatherDesc;
+    }
+
+    public String getWeatherCode() {
+        return weatherCode;
+    }
+
+    public void setWeatherCode(String weatherCode) {
+        this.weatherCode = weatherCode;
     }
 }

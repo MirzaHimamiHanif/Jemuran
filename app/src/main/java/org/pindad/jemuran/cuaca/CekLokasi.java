@@ -24,7 +24,6 @@ public class CekLokasi {
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         }else{
-
             LocationManager locationManager = (LocationManager) MyApplication
                     .getAppContext()
                     .getSystemService(MyApplication.getAppContext().LOCATION_SERVICE);
