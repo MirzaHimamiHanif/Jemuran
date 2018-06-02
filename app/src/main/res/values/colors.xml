@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00e9ff</color>
-    <color name="colorPrimaryDark">#85f3f7</color>
+    <color name="colorPrimary">#56ced2</color>
+    <color name="colorPrimaryDark">#00d5ce</color>
     <color name="colorAccent">#0400ff</color>
     <color name="colorTransparant">#33000000</color>
-    <color name="colorLogin">#20fff0</color>
+    <color name="colorLogin">#4FC3F7</color>
     <color name="colorStatus">#20fff0</color>
     <color name="colorSensor">#20fff0</color>
     <color name="colorCuaca">#20fff0</color>

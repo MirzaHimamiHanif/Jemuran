@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/backgroundcuaca"
     android:padding="20dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,7 +139,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -149,7 +148,7 @@
         <HorizontalScrollView
             android:id="@+id/sHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/forecast"

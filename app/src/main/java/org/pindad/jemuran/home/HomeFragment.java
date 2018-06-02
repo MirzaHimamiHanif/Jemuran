@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,11 +36,10 @@ import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;
  * Created by ASUS on 11/02/2018.
  */
 
-public class StatusFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+public class HomeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private TextView mAtap, mKipas;
     private Switch mSistemJemuran;
-    private ImageView lemari;
-    private ListSistem mListSistem;
+    private ImageButton lemari;
     boolean cek;
     private StatusViewModel statusViewModel;
     private SistemViewModel sistemViewModel;
@@ -51,7 +52,6 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         mSistemJemuran = view.findViewById(R.id.switchSistemJemuran);
         mAtap = view.findViewById(R.id.statusAtap);
         mKipas = view.findViewById(R.id.statusKipas);
-        mListSistem = new ListSistem();
         cek=true;
         statusViewModel = ViewModelProviders.of(getActivity()).get(StatusViewModel.class);
         sistemViewModel = ViewModelProviders.of(getActivity()).get(SistemViewModel.class);
@@ -63,7 +63,6 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), HistoryActivity.class);
-                intent.putExtra("username", ((MainActivity)getActivity()).username);
                 startActivity(intent);
             }
         });
@@ -107,7 +106,6 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         GetSistemData getSistemData = new GetSistemData();
          if (compoundButton==mSistemJemuran){
-             Toast.makeText(getContext(), b + "", Toast.LENGTH_SHORT).show();
              getSistemData.pushSistem(b, "sistem_jemuran");
         }
     }

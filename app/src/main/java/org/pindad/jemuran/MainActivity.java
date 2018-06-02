@@ -1,34 +1,30 @@
 package org.pindad.jemuran;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 
 import org.pindad.jemuran.alarm.SetAlarm;
-import org.pindad.jemuran.authentification.LoginActivity;
 import org.pindad.jemuran.cuaca.CekLokasi;
 import org.pindad.jemuran.cuaca.CuacaFragment;
-import org.pindad.jemuran.home.StatusFragment;
+import org.pindad.jemuran.home.HomeFragment;
 import org.pindad.jemuran.sensor.SensorFragment;
+import org.pindad.jemuran.setting.SettingFragment;
 import org.pindad.jemuran.util.BottomNavigationViewHelper;
-
 
 public class MainActivity extends AppCompatActivity{
     private BottomNavigationView mNavigationView;
     private FragmentManager mFragmentManager;
-    private StatusFragment statusFragment;
+    private HomeFragment homeFragment;
     private SensorFragment sensorFragment;
     private CuacaFragment cuacaFragment;
+    private SettingFragment settingFragment;
     public String username;
     LocationManager locationManager;
 
@@ -40,11 +36,12 @@ public class MainActivity extends AppCompatActivity{
         mNavigationView = findViewById(R.id.navigation);
         mFragmentManager = getSupportFragmentManager();
         sensorFragment = new SensorFragment();
-        statusFragment = new StatusFragment();
+        homeFragment = new HomeFragment();
         cuacaFragment = new CuacaFragment();
+        settingFragment = new SettingFragment();
         BottomNavigationViewHelper.disableShiftMode(mNavigationView);
         mFragmentManager.beginTransaction()
-                .replace(R.id.container, statusFragment)
+                .replace(R.id.container, homeFragment)
                 .commit();
         NavBotClicked();
         CekLokasi cekLokasi = new CekLokasi(this);
@@ -63,9 +60,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.navigation_status:
+                    case R.id.navigation_home:
                         mFragmentManager.beginTransaction()
-                                .replace(R.id.container, statusFragment)
+                                .replace(R.id.container, homeFragment)
                                 .commit();
                         return true;
 
@@ -80,26 +77,10 @@ public class MainActivity extends AppCompatActivity{
                                 .replace(R.id.container, cuacaFragment)
                                 .commit();
                         return true;
-                    case R.id.navigation_logout:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Anda yakin ingin keluar?")
-                                .setCancelable(false)
-                                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Context context = getApplicationContext();
-                                        context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit().clear().commit();
-                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                })
-                                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                    case R.id.navigation_setting:
+                        mFragmentManager.beginTransaction()
+                                .replace(R.id.container, settingFragment)
+                                .commit();
                         return true;
                 }
                 return false;

@@ -21,7 +21,6 @@ public class SistemViewModel extends ViewModel implements Interactor<ListSistem>
         getSistemData.syncSistem();
     }
 
-
     public MutableLiveData<ListSistem> getListSistemMutableLiveData() {
         return listSistemMutableLiveData;
     }

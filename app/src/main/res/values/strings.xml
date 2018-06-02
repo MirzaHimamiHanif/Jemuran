@@ -6,6 +6,7 @@
     <string name="title_jemuran">Jemuran</string>
     <string name="title_cuaca">Cuaca</string>
     <string name="title_logout">LogOut</string>
+    <string name="title_setting">Setting</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -21,4 +22,8 @@
     <string name="wwo_api_key">5b7e8f4eae6f49afb8164444182305</string>
     <string name="longtitude">longtitude</string>
     <string name="latitude">latitude</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_home">Home</string>
 </resources>

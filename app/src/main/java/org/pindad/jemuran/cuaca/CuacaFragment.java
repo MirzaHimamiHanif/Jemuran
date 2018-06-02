@@ -118,13 +118,12 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
 
     @Override
     public void onClick(View view) {
-        progress_spinner.show();
         if (view == placePicker){
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             try {
                 //menjalankan place picker
                 startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                progress_spinner.dismiss();
+                progress_spinner.show();
                 // check apabila <a title="Solusi Tidak Bisa Download Google Play Services di Android" href="http://www.twoh.co/2014/11/solusi-tidak-bisa-download-google-play-services-di-android/" target="_blank">Google Play Services tidak terinstall</a> di HP
             } catch (GooglePlayServicesRepairableException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -132,6 +131,7 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
             } catch (GooglePlayServicesNotAvailableException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
+            progress_spinner.dismiss();
         }
     }
     @Override

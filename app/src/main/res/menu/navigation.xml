@@ -3,9 +3,9 @@
 
 
     <item
-        android:id="@+id/navigation_status"
+        android:id="@+id/navigation_home"
         android:icon="@drawable/ic_memory_black_24dp"
-        android:title="@string/title_status" />
+        android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_sensor"
@@ -18,8 +18,8 @@
         android:title="@string/title_cuaca" />
 
     <item
-        android:id="@+id/navigation_logout"
-        android:icon="@drawable/ic_exit_to_app_black_24dp"
-        android:title="@string/title_logout" />
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/ic_more_horiz_black_24dp"
+        android:title="@string/title_setting" />
 
 </menu>

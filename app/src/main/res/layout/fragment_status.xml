@@ -1,32 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/lemari"
+
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:src="@drawable/warning"
+        android:src="@drawable/logo"
         android:paddingBottom="32dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+        <ImageButton
+            android:id="@+id/lemari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:background="#4FC3F7"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:srcCompat="@drawable/ic_history"
+            />
+    </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@android:color/white">
+        android:background="#F5F5F5">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:padding="8dp"
             android:orientation="horizontal"
-            android:background="@color/colorTransparant">
+            android:background="#4FC3F7">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Sistem Jemuran"
+                    android:text="SISTEM JEMURAN"
                     android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
