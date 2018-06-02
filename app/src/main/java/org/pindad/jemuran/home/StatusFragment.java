@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.pindad.jemuran.cuaca.datacuaca.GetCuacaData;
 import org.pindad.jemuran.history.HistoryActivity;
 import org.pindad.jemuran.MainActivity;
+import org.pindad.jemuran.home.cek.CekViewModel;
 import org.pindad.jemuran.home.sistem.SistemViewModel;
 import org.pindad.jemuran.home.sistem.datasistem.GetSistemData;
 import org.pindad.jemuran.home.sistem.modelsistem.ListSistem;
@@ -41,6 +42,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     boolean cek;
     private StatusViewModel statusViewModel;
     private SistemViewModel sistemViewModel;
+    private CekViewModel cekViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +55,8 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         cek=true;
         statusViewModel = ViewModelProviders.of(getActivity()).get(StatusViewModel.class);
         sistemViewModel = ViewModelProviders.of(getActivity()).get(SistemViewModel.class);
+        cekViewModel = ViewModelProviders.of(getActivity()).get(CekViewModel.class);
+
         lemari = view.findViewById(R.id.lemari);
         lemari.setOnClickListener(new View.OnClickListener(){
 
@@ -82,6 +86,12 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
                 mSistemJemuran.setChecked(listSistem.isSistem_jemuran());
             }
         });
+        cekViewModel.getCekMutableLiveData().observe(getActivity(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                mSistemJemuran.setChecked(aBoolean);
+            }
+        });
     }
 
     private TextView setTextView(TextView textView, boolean status){
@@ -97,6 +107,7 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         GetSistemData getSistemData = new GetSistemData();
          if (compoundButton==mSistemJemuran){
+             Toast.makeText(getContext(), b + "", Toast.LENGTH_SHORT).show();
              getSistemData.pushSistem(b, "sistem_jemuran");
         }
     }

@@ -111,20 +111,8 @@ public class NotificationReceiver extends BroadcastReceiver {
                     final DatabaseReference myRef;
                     database = FirebaseDatabase.getInstance();
                     myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext()));
+                    myRef.child("jam").setValue(tempNum +1);
 
-                    final int finalTempNum = tempNum;
-                    myRef.child("sistem").child("sistem_jemuran").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.getValue(Boolean.class)){
-                                myRef.child("jam").setValue(finalTempNum +1);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
                 }else {
                     text = "Cuaca cerah sampai jam " + hujan;
                 }

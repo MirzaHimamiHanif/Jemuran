@@ -20,6 +20,12 @@ public class SistemViewModel extends ViewModel implements Interactor<ListSistem>
         getSistemData.registerInteractot(this);
         getSistemData.syncSistem();
     }
+
+
+    public MutableLiveData<ListSistem> getListSistemMutableLiveData() {
+        return listSistemMutableLiveData;
+    }
+
     @Override
     public void onSyncData(ListSistem data) {
         listSistemMutableLiveData.setValue(data);
@@ -34,11 +40,6 @@ public class SistemViewModel extends ViewModel implements Interactor<ListSistem>
     public void onSyncArrayHistory(ArrayList<ListSistem> data) {
 
     }
-
-    public MutableLiveData<ListSistem> getListSistemMutableLiveData() {
-        return listSistemMutableLiveData;
-    }
-
     @Override
     public void onFailed(ListSistem error) {
 
