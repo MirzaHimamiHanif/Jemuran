@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -78,13 +79,13 @@ public class StatusFragment extends Fragment implements CompoundButton.OnChecked
         sistemViewModel.getListSistemMutableLiveData().observe(getActivity(), new Observer<ListSistem>() {
             @Override
             public void onChanged(@Nullable ListSistem listSistem) {
-                mSistemJemuran.setChecked(mListSistem.isSistem_jemuran());
+                mSistemJemuran.setChecked(listSistem.isSistem_jemuran());
             }
         });
     }
 
     private TextView setTextView(TextView textView, boolean status){
-        if (status==false){
+        if (!status){
             textView.setText("Off");
         }else{
             textView.setText("On");

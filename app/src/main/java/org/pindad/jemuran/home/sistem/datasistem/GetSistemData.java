@@ -2,6 +2,7 @@ package org.pindad.jemuran.home.sistem.datasistem;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +16,8 @@ import org.pindad.jemuran.R;
 import org.pindad.jemuran.home.status.modelstatus.ListStatus;
 import org.pindad.jemuran.util.Interactor;
 import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;
+
+import java.lang.annotation.Target;
 
 public class GetSistemData {
     private Interactor interactor;

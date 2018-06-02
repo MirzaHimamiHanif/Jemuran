@@ -10,6 +10,8 @@ import android.widget.TextView;
 import org.pindad.jemuran.R;
 import org.pindad.jemuran.history.modelhistory.ListHistory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,10 +38,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
-            String[] temp = splitString(listItems.get(position).getTanggal());
             holder.nomer.setText((position+1)+"");
-            holder.tanggal.setText(temp[0]);
-            holder.jam.setText(temp[1]);
+            holder.tanggal.setText(getDate(Long.parseLong(listItems.get(position).getTanggal())));
+            holder.jam.setText(getHour(Long.parseLong(listItems.get(position).getTanggal())));
             holder.suhu.setText(String.valueOf(listItems.get(position).getSuhu()));
             holder.kelembapan.setText(String.valueOf(listItems.get(position).getKelembapan()));
         }catch (Exception e){
@@ -56,10 +57,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
-    public String[] splitString(String tanggal){
-        return tanggal.split(" ");
-    }
-    
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nomer, tanggal, jam, suhu, kelembapan;
 
@@ -72,5 +69,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             kelembapan = itemView.findViewById(R.id.kelembapan);
         }
     }
-
+    private String getDate(long timeStamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date netDate = (new Date(timeStamp*1000));
+        return sdf.format(netDate);
+    }
+    private String getHour(long timeStamp){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date netDate = (new Date(timeStamp*1000));
+        return sdf.format(netDate);
+    }
 }
