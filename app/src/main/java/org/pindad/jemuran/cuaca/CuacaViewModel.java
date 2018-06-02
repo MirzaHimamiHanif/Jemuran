@@ -6,8 +6,6 @@ import android.arch.lifecycle.ViewModel;
 import org.pindad.jemuran.cuaca.datacuaca.GetCuacaData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.ListData;
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
-import org.pindad.jemuran.sensor.datasensor.GetSensorData;
-import org.pindad.jemuran.sensor.modelsensor.ListSensor;
 import org.pindad.jemuran.util.Interactor;
 
 import java.util.ArrayList;

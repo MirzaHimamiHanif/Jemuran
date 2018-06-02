@@ -1,11 +1,11 @@
-package org.pindad.jemuran.sensor;
+package org.pindad.jemuran.home.sensor;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import org.pindad.jemuran.cuaca.modelcuacaapi.modelforecast.ListHourly;
-import org.pindad.jemuran.sensor.datasensor.GetSensorData;
-import org.pindad.jemuran.sensor.modelsensor.ListSensor;
+import org.pindad.jemuran.home.sensor.datasensor.GetSensorData;
+import org.pindad.jemuran.home.sensor.modelsensor.ListSensor;
 import org.pindad.jemuran.util.Interactor;
 
 import java.util.ArrayList;

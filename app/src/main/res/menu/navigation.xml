@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_memory_black_24dp"
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_sensor"
-        android:icon="@drawable/ic_notifications_none_black_24dp"
-        android:title="@string/title_sensor"/>
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_history"
+        android:title="@string/string_history" />
 
     <item
         android:id="@+id/navigation_cuaca"
@@ -20,6 +20,6 @@
     <item
         android:id="@+id/navigation_setting"
         android:icon="@drawable/ic_more_horiz_black_24dp"
-        android:title="@string/title_setting" />
+        android:title="@string/string_more" />
 
 </menu>

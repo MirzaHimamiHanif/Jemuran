@@ -1,6 +1,5 @@
 package org.pindad.jemuran;
 
-import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +12,8 @@ import android.view.MenuItem;
 import org.pindad.jemuran.alarm.SetAlarm;
 import org.pindad.jemuran.cuaca.CekLokasi;
 import org.pindad.jemuran.cuaca.CuacaFragment;
+import org.pindad.jemuran.history.HistoryFragment;
 import org.pindad.jemuran.home.HomeFragment;
-import org.pindad.jemuran.sensor.SensorFragment;
 import org.pindad.jemuran.setting.SettingFragment;
 import org.pindad.jemuran.util.BottomNavigationViewHelper;
 
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity{
     private BottomNavigationView mNavigationView;
     private FragmentManager mFragmentManager;
     private HomeFragment homeFragment;
-    private SensorFragment sensorFragment;
+    private HistoryFragment historyFragment;
     private CuacaFragment cuacaFragment;
     private SettingFragment settingFragment;
     public String username;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         mNavigationView = findViewById(R.id.navigation);
         mFragmentManager = getSupportFragmentManager();
-        sensorFragment = new SensorFragment();
+        historyFragment = new HistoryFragment();
         homeFragment = new HomeFragment();
         cuacaFragment = new CuacaFragment();
         settingFragment = new SettingFragment();
@@ -48,11 +47,6 @@ public class MainActivity extends AppCompatActivity{
         cekLokasi.cek();
         SetAlarm setAlarm = new SetAlarm();
         setAlarm.setAlarm();
-        getUsername();
-    }
-    public void getUsername(){
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), this.MODE_PRIVATE);
-        username = sharedPreferences.getString(getString(R.string.username), null);
     }
 
     public void NavBotClicked() {
@@ -66,9 +60,9 @@ public class MainActivity extends AppCompatActivity{
                                 .commit();
                         return true;
 
-                    case R.id.navigation_sensor:
+                    case R.id.navigation_history:
                         mFragmentManager.beginTransaction()
-                                .replace(R.id.container, sensorFragment)
+                                .replace(R.id.container, historyFragment)
                                 .commit();
                         return true;
 

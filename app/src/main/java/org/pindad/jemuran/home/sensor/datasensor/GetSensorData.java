@@ -1,6 +1,4 @@
-package org.pindad.jemuran.sensor.datasensor;
-
-import android.content.SharedPreferences;
+package org.pindad.jemuran.home.sensor.datasensor;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -8,9 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.pindad.jemuran.R;
-import org.pindad.jemuran.home.status.modelstatus.ListStatus;
-import org.pindad.jemuran.sensor.modelsensor.ListSensor;
+import org.pindad.jemuran.home.sensor.modelsensor.ListSensor;
 import org.pindad.jemuran.util.Interactor;
 import org.pindad.jemuran.util.MyApplication;
 import org.pindad.jemuran.util.sharedpreference.SaveSharedPreference;

@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,7 +46,7 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
     private Double mLatitude, mLongitude;
     TextView cityField, detailsField, updatedField, temperatureField, humidityField, pressureField;
     ImageView weatherIcon;
-    LinearLayout placePicker, progressBar;
+    CardView placePicker;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
@@ -57,7 +58,7 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cuaca, container, false);
         listHourlies = new ArrayList<>();
         locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
@@ -65,8 +66,7 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
         updatedField = (TextView) view.findViewById(R.id.updated_field);
         detailsField = (TextView) view.findViewById(R.id.details_field);
         weatherIcon = (ImageView) view.findViewById(R.id.weather_icon);
-        placePicker = (LinearLayout) view.findViewById(R.id.click_picker);
-        progressBar = (LinearLayout) view.findViewById(R.id.progressBar);
+        placePicker = (CardView) view.findViewById(R.id.click_picker);
         temperatureField = (TextView) view.findViewById(R.id.current_temperature_field);
         humidityField = (TextView) view.findViewById(R.id.humidity_field);
         pressureField = (TextView) view.findViewById(R.id.pressure_field);

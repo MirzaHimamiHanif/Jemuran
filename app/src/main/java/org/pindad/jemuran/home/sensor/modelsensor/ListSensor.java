@@ -1,4 +1,4 @@
-package org.pindad.jemuran.sensor.modelsensor;
+package org.pindad.jemuran.home.sensor.modelsensor;
 
 /**
  * Created by ASUS on 11/02/2018.
