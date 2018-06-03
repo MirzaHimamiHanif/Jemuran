@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.pindad.jemuran.R;
 import org.pindad.jemuran.cuaca.CuacaViewModel;
@@ -29,6 +34,7 @@ import org.pindad.jemuran.history.modelhistory.ListHistory;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryFragment extends Fragment {
     RecyclerView recyclerView;
@@ -57,10 +63,28 @@ public class HistoryFragment extends Fragment {
                 else
                     mDataKosong.setVisibility(View.GONE);
                 setRecyclerView(listHistories);
+                setChart(listHistories);
             }
         });
     }
+    private void setChart(ArrayList<ListHistory> listHistories){
+        List<Entry> entries = new ArrayList<>();
+        for (int i=0; i<listHistories.size(); i++){
+            entries.add(new Entry(i+1,(int)listHistories.get(i).getKelembapan()));
+        }
 
+        LineDataSet data = new LineDataSet(entries, "Kelembapan");
+        data.setFillAlpha(110);
+        data.setColor(Color.BLUE);
+
+        LineData lineData = new LineData(data);
+
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        mChart.setData(lineData);
+        mChart.notifyDataSetChanged();
+        mChart.invalidate();
+    }
     private void setRecyclerView(ArrayList<ListHistory> ListHistory){
         HistoryAdapter adapter=new HistoryAdapter(getContext(), ListHistory );
         recyclerView.setAdapter(adapter);

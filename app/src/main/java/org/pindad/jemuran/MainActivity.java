@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity{
         NavBotClicked();
         CekLokasi cekLokasi = new CekLokasi(this);
         cekLokasi.cek();
-        SetAlarm setAlarm = new SetAlarm();
-        setAlarm.setAlarm();
     }
 
     public void NavBotClicked() {

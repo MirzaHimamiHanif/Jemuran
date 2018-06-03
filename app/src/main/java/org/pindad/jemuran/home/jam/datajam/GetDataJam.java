@@ -1,5 +1,7 @@
 package org.pindad.jemuran.home.jam.datajam;
 
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,11 +17,11 @@ public class GetDataJam {
     private Interactor interactor;
 
     public void syncJam(){
-        FirebaseDatabase database;
+        final FirebaseDatabase database;
         DatabaseReference myRef;
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext())).child("jam");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try{

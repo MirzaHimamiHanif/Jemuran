@@ -77,10 +77,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
     private void signIn(){
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child(username);
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try{
