@@ -50,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:background="#E3F2FD"
                     android:gravity="center">
                     <ImageButton
                         android:id="@+id/place_picker"
@@ -158,6 +159,7 @@
             android:textColor="#000"/>
         <Button
             android:id="@+id/set_jam"
+            android:background="#FFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -166,20 +168,16 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/sHorizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <HorizontalScrollView
-            android:id="@+id/sHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/forecast"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
-        </HorizontalScrollView>
+        android:layout_weight="1"
+        android:layout_gravity="center">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/forecast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 </LinearLayout>

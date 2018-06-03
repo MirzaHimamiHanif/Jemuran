@@ -41,8 +41,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             holder.nomer.setText((position+1)+"");
             holder.tanggal.setText(getDate(Long.parseLong(listItems.get(position).getTanggal())));
             holder.jam.setText(getHour(Long.parseLong(listItems.get(position).getTanggal())));
-            holder.suhu.setText(String.valueOf(listItems.get(position).getSuhu()));
-            holder.kelembapan.setText(String.valueOf(listItems.get(position).getKelembapan()));
+            holder.suhu.setText(String.valueOf(listItems.get(position).getSuhu()) + "°C");
+            holder.kelembapan.setText(String.valueOf(listItems.get(position).getKelembapan()) + "%");
         }catch (Exception e){
 
         }

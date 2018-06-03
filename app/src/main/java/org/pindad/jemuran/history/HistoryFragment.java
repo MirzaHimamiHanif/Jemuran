@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -67,23 +68,29 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
+
     private void setChart(ArrayList<ListHistory> listHistories){
-        List<Entry> entries = new ArrayList<>();
-        for (int i=0; i<listHistories.size(); i++){
-            entries.add(new Entry(i+1,(int)listHistories.get(i).getKelembapan()));
+        try {
+            List<Entry> entries = new ArrayList<>();
+
+            for (int i=0; i<listHistories.size(); i++){
+                entries.add(new Entry(i+1,(int)listHistories.get(i).getKelembapan()));
+            }
+
+            LineDataSet data = new LineDataSet(entries, "Kelembapan");
+            data.setFillAlpha(110);
+            data.setColor(Color.BLUE);
+
+            LineData lineData = new LineData(data);
+
+            mChart.setDragEnabled(true);
+            mChart.setScaleEnabled(true);
+            mChart.setData(lineData);
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Histori Kosong", Toast.LENGTH_SHORT).show();
         }
-
-        LineDataSet data = new LineDataSet(entries, "Kelembapan");
-        data.setFillAlpha(110);
-        data.setColor(Color.BLUE);
-
-        LineData lineData = new LineData(data);
-
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setData(lineData);
-        mChart.notifyDataSetChanged();
-        mChart.invalidate();
     }
     private void setRecyclerView(ArrayList<ListHistory> ListHistory){
         HistoryAdapter adapter=new HistoryAdapter(getContext(), ListHistory );

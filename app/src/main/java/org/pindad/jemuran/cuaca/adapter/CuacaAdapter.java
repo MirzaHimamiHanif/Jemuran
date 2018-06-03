@@ -38,7 +38,7 @@ public class CuacaAdapter extends RecyclerView.Adapter<CuacaAdapter.ViewHolder> 
         Glide.with(mContext)
                 .load(listItems.get(position).getWeatherIconUrl().get(0).getValue())
                 .into(holder.weather_icon);
-        holder.current_temperature_field.setText(listItems.get(position).getTempC());
+        holder.current_temperature_field.setText(listItems.get(position).getTempC()+ "°C");
     }
 
     @Override

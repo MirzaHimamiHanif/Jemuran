@@ -8,8 +8,6 @@
     android:orientation="vertical">
 
     <ImageView
-
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:src="@drawable/logo"
@@ -19,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#F5F5F5">
+        android:background="#FFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,6 +41,7 @@
                     android:text="SISTEM JEMURAN"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -52,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
