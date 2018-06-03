@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import org.pindad.jemuran.MainActivity;
 import org.pindad.jemuran.R;
+import org.pindad.jemuran.aboutus.AboutUsActivity;
 import org.pindad.jemuran.authentification.LoginActivity;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
@@ -55,7 +56,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == mAboutUs){
-
+            Intent intent = new Intent(getActivity(), AboutUsActivity.class);
+            startActivity(intent);
         }else if (view == mLogout){
             logout();
         }

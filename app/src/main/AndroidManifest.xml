@@ -39,7 +39,8 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".alarm.NotificationView"></activity>
+        <activity android:name=".alarm.NotificationView" />
+        <activity android:name=".aboutus.AboutUsActivity"></activity>
     </application>
 
 </manifest>
