@@ -166,7 +166,6 @@
             android:textColor="#000"
             android:text="Set\nTimer"/>
     </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/sHorizontal"
         android:layout_width="match_parent"
