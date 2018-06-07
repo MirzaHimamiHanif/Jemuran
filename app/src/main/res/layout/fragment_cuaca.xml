@@ -157,14 +157,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textColor="#000"/>
-        <Button
-            android:id="@+id/set_jam"
-            android:background="#FFF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textColor="#000"
-            android:text="Set\nTimer"/>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/sHorizontal"

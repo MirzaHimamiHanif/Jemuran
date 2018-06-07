@@ -53,7 +53,6 @@ import java.util.Calendar;
 public class CuacaFragment extends Fragment implements View.OnClickListener  {
     private Double mLatitude, mLongitude;
     TextView cityField, detailsField, updatedField, temperatureField, humidityField, pressureField, mTextForecast;
-    Button mSetJam;
     ImageView weatherIcon;
     CardView placePicker;
     LinearLayout linearLayout;
@@ -62,7 +61,7 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
     RecyclerView.Adapter mAdapter;
     private int PLACE_PICKER_REQUEST = 1;
     private CuacaViewModel cuacaViewModel;
-    int tempNum ;
+    int tempNum, tempNum2;
     String hujan;
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -81,13 +80,11 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
         pressureField = view.findViewById(R.id.pressure_field);
         mRecyclerView = view.findViewById(R.id.forecast);
         mTextForecast = view.findViewById(R.id.text_forecast);
-        mSetJam = view.findViewById(R.id.set_jam);
         linearLayout = view.findViewById(R.id.layout_cuaca);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext()));
 
         placePicker.setOnClickListener(this);
-        mSetJam.setOnClickListener(this);
         cuacaViewModel = ViewModelProviders.of(getActivity()).get(CuacaViewModel.class);
         setData();
         return view;
@@ -127,44 +124,38 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
     }
 
     private void setTextForecast(ArrayList<ListHourly> listHourlies){
-        hujan = listHourlies.get(0).getTime();
-        tempNum = 0;
-        if (Integer.parseInt(listHourlies.get(0).getWeatherCode())>150){
-            for (int i=1; i<listHourlies.size(); i++){
-                tempNum++;
-                if (Integer.parseInt(listHourlies.get(i).getWeatherCode())<150){
-                    break;
+        try{
+            hujan = listHourlies.get(0).getTime();
+            tempNum = 0;
+            tempNum2 = 0;
+            if (Integer.parseInt(listHourlies.get(0).getWeatherCode())>150){
+                for (int i=1; i<listHourlies.size(); i++){
+                    if (Integer.parseInt(listHourlies.get(i).getWeatherCode())<150){
+                        break;
+                    }
+                    tempNum++;
+                }
+            }else{
+                for (int i=1; i<listHourlies.size(); i++){
+                    if (Integer.parseInt(listHourlies.get(i).getWeatherCode())>150){
+                        break;
+                    }
+                    tempNum2++;
                 }
             }
+            String text = "";
+            if (tempNum!=0){
+                text = "Hujan selama " + (tempNum +1) + " jam dari jam " +hujan;
+            }else {
+                text = "Cuaca cerah selama " + (tempNum2 +1) + " jam dari jam " +hujan;
+            }
+            mTextForecast.setText(text);
+            mTextForecast.invalidate();
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        String text = "";
-        if (tempNum!=0){
-            text = "Hujan selama " + tempNum + " jam dari jam " +hujan;
-        }else {
-            text = "Cuaca cerah sampai jam " + hujan;
-        }
-        mTextForecast.setText(text);
-        mTextForecast.invalidate();
     }
 
-    private void setJam(){
-        String text = "";
-        if (tempNum!=0){
-            myRef.child("jam").setValue(tempNum +1);
-            text = "Timer telah disetting selama " + (tempNum + 1) + " Jam";
-        }else {
-            text = "Timer tidak disetting\nCuaca cerah sampai jam " + hujan;
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(text)
-                .setNeutralButton("Oke", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { dialog.cancel();
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
     @Override
     public void onClick(View view) {
         if (view == placePicker){
@@ -180,9 +171,6 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-        if (view == mSetJam){
-            setJam();
-        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,6 +185,8 @@ public class CuacaFragment extends Fragment implements View.OnClickListener  {
                 getCuacaData.syncCuaca();
                 getCuacaData.syncForecast();
                 getCuacaData.registerInteractot(cuacaViewModel);
+                SetAlarm setAlarm = new SetAlarm();
+                setAlarm.setAlarm();
                 mTextForecast.invalidate();
             }
         }

@@ -10,7 +10,6 @@ import org.pindad.jemuran.util.MyApplication;
 import java.util.Calendar;
 
 public class SetAlarm {
-
     public void setAlarm(){
         Intent intent1 = new Intent(MyApplication.getAppContext(), NotificationReceiver.class);
 

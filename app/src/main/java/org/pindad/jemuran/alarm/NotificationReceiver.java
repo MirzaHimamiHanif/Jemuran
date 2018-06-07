@@ -65,71 +65,84 @@ public class NotificationReceiver extends BroadcastReceiver {
             @Override
             public void onResponse(Call<DataWWO> call, Response<DataWWO> response) {
                 ArrayList<ListHourly> tempHourly = new ArrayList<>();
-                ListData listData = response.body().getData();
-                int x = 0;
-                Calendar rightNow = Calendar.getInstance();
-                int cekJam = rightNow.get(Calendar.HOUR_OF_DAY)*100;
-                for (int i=0; i<listData.getForecastList().size(); i++ ){
-                    for(int j=0;j<listData.getForecastList().get(i).getHourly().size();j++){
-                        if(i==0){
-                            String t = listData.getForecastList().get(i).getHourly().get(j).getTime();
-                            int tempNum = Integer.parseInt(t);
-                            if (tempNum>cekJam){
-                                x++;
+                try{
+
+                    ListData listData = response.body().getData();
+                    int x = 0;
+                    Calendar rightNow = Calendar.getInstance();
+                    int cekJam = rightNow.get(Calendar.HOUR_OF_DAY)*100;
+                    for (int i=0; i<listData.getForecastList().size(); i++ ){
+                        for(int j=0;j<listData.getForecastList().get(i).getHourly().size();j++){
+                            if(i==0){
+                                String t = listData.getForecastList().get(i).getHourly().get(j).getTime();
+                                int tempNum = Integer.parseInt(t);
+                                if (tempNum>cekJam){
+                                    x++;
+                                    tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
+                                }
+                            }else {
                                 tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
+                                x++;
+                                if (x==25){
+                                    break;
+                                }
                             }
-                        }else {
-                            tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
-                            x++;
-                            if (x==25){
+                        }
+                    }
+
+                    String cek;
+                    for (int i=0; i<tempHourly.size(); i++){
+                        cek = tempHourly.get(i).getTime();
+                        tempHourly.get(i).setTime(timeChange(cek));
+                    }
+                    String hujan;
+                    int tempNum = 0;
+                    int tempNum2 = 0;
+                    hujan = tempHourly.get(0).getTime();
+                    if (Integer.parseInt(tempHourly.get(0).getWeatherCode())>150){
+                        for (int i=1; i<tempHourly.size(); i++){
+                            if (Integer.parseInt(tempHourly.get(i).getWeatherCode())<150){
                                 break;
                             }
+                            tempNum++;
+                        }
+                    }else{
+                        for (int i=1; i<tempHourly.size(); i++){
+                            if (Integer.parseInt(tempHourly.get(i).getWeatherCode())>150){
+                                break;
+                            }
+                            tempNum2++;
                         }
                     }
-                }
-
-                String cek;
-                for (int i=0; i<tempHourly.size(); i++){
-                    cek = tempHourly.get(i).getTime();
-                    tempHourly.get(i).setTime(timeChange(cek));
-                }
-                String hujan;
-                int tempNum = 0;
-                hujan = tempHourly.get(0).getTime();
-                if (Integer.parseInt(tempHourly.get(0).getWeatherCode())>150){
-                    for (int i=1; i<tempHourly.size(); i++){
-                        tempNum++;
-                        if (Integer.parseInt(tempHourly.get(i).getWeatherCode())<150){
-                            break;
-                        }
-                    }
-                }
-                String text = "";
-                if (tempNum!=0){
-                    text = "Hujan selama " + tempNum + " jam dari jam " +hujan;
+                    String text = "";
                     final FirebaseDatabase database;
                     final DatabaseReference myRef;
                     database = FirebaseDatabase.getInstance();
-                    myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext()));
-                    myRef.child("jam").setValue(tempNum +1);
-
-                }else {
-                    text = "Cuaca cerah sampai jam " + hujan;
+                    myRef = database.getReference().child(SaveSharedPreference.getUserName(MyApplication.getAppContext())).child("jam");
+                    if (tempNum!=0){
+                        text = "Hujan selama " + (tempNum +1) + " jam dari jam " +hujan;
+                        myRef.setValue(tempNum +1);
+                    }else {
+                        text = "Cuaca cerah selama " + (tempNum2 +1) + " jam dari jam " + hujan;
+                        myRef.setValue(0);
+                    }
+                    Intent repeatingIntent = new Intent(MyApplication.getAppContext(), MainActivity.class);
+                    repeatingIntent.putExtra("getId", 0);
+                    repeatingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MyApplication.getAppContext(),0, repeatingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationManager notificationManager = (NotificationManager) MyApplication.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.getAppContext(), "0")
+                            .setContentIntent(pendingIntent)
+                            .setSmallIcon(android.R.drawable.arrow_up_float)
+                            .setContentTitle("Notifikasi")
+                            .setContentText(text)
+                            .setSound(alarmSound)
+                            .setAutoCancel(true);
+                    notificationManager.notify(0, builder.build());
+                }catch (Exception e){
+                    Toast.makeText(MyApplication.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                Intent repeatingIntent = new Intent(MyApplication.getAppContext(), NotificationView.class);
-                repeatingIntent.putExtra("getId", 0);
-                repeatingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                PendingIntent pendingIntent = PendingIntent.getActivity(MyApplication.getAppContext(),0, repeatingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                NotificationManager notificationManager = (NotificationManager) MyApplication.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.getAppContext(), "0")
-                        .setContentIntent(pendingIntent)
-                        .setSmallIcon(android.R.drawable.arrow_up_float)
-                        .setContentTitle("Notifikasi")
-                        .setContentText(text)
-                        .setSound(alarmSound)
-                        .setAutoCancel(true);
-                notificationManager.notify(0, builder.build());
             }
 
             @Override

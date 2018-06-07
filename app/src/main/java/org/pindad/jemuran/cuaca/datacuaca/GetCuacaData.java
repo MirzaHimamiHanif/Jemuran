@@ -69,34 +69,37 @@ public class GetCuacaData {
         call.enqueue(new Callback<DataWWO>() {
             @Override
             public void onResponse(Call<DataWWO> call, Response<DataWWO> response) {
-                ListData listData = response.body().getData();
-                int x = 0;
-                Calendar rightNow = Calendar.getInstance();
-                int cekJam = rightNow.get(Calendar.HOUR_OF_DAY)*100;
                 ArrayList<ListHourly> tempHourly = new ArrayList<>();
-                for (int i=0; i<listData.getForecastList().size(); i++ ){
-                    for(int j=0;j<listData.getForecastList().get(i).getHourly().size();j++){
-                        if(i==0){
-                            String t = listData.getForecastList().get(i).getHourly().get(j).getTime();
-                            int tempNum = Integer.parseInt(t);
-                            if (tempNum>cekJam){
-                                x++;
+                try {
+                    ListData listData = response.body().getData();
+                    int x = 0;
+                    Calendar rightNow = Calendar.getInstance();
+                    int cekJam = rightNow.get(Calendar.HOUR_OF_DAY)*100;
+                    for (int i=0; i<listData.getForecastList().size(); i++ ){
+                        for(int j=0;j<listData.getForecastList().get(i).getHourly().size();j++){
+                            if(i==0){
+                                String t = listData.getForecastList().get(i).getHourly().get(j).getTime();
+                                int tempNum = Integer.parseInt(t);
+                                if (tempNum>cekJam){
+                                    x++;
+                                    tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
+                                }
+                            }else {
                                 tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
-                            }
-                        }else {
-                            tempHourly.add(listData.getForecastList().get(i).getHourly().get(j));
-                            x++;
-                            if (x==25){
-                                break;
+                                x++;
+                                if (x==25){
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-
-                String cek;
-                for (int i=0; i<tempHourly.size(); i++){
-                    cek = tempHourly.get(i).getTime();
-                    tempHourly.get(i).setTime(timeChange(cek));
+                    String cek;
+                    for (int i=0; i<tempHourly.size(); i++){
+                        cek = tempHourly.get(i).getTime();
+                        tempHourly.get(i).setTime(timeChange(cek));
+                    }
+                }catch (Exception e){
+                    Toast.makeText(MyApplication.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 interactor.onSyncArrayData(tempHourly);
             }

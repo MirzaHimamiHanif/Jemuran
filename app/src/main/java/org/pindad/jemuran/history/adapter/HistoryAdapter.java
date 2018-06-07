@@ -13,6 +13,7 @@ import org.pindad.jemuran.history.modelhistory.ListHistory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 
 /**
@@ -71,11 +72,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
     private String getDate(long timeStamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date netDate = (new Date(timeStamp*1000));
         return sdf.format(netDate);
     }
     private String getHour(long timeStamp){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date netDate = (new Date(timeStamp*1000));
         return sdf.format(netDate);
     }
